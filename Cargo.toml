@@ -1,0 +1,13 @@
+[package]
+name = "worldstate_parser"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = { version = "0.4.42", features = ["serde"] }
+lzma-rs = "0.3.0"
+paste = "1.0.15"
+reqwest = { version = "0.13.1", features = ["blocking", "json"] }
+serde = "1.0.228"
+serde_json = "1.0.148"
+serde_repr = "0.1.20"

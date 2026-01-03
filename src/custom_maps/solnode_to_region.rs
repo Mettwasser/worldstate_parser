@@ -9,7 +9,7 @@ use crate::manifest_entries::{
 
 pub type SolNodeToRegionMap = HashMap<String, Region>;
 
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub struct Region {
     pub system_index: usize,
 

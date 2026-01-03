@@ -4,7 +4,11 @@ use crate::{
     core::Mappable,
     custom_maps::CustomMaps,
     manifests::Exports,
-    worldstate_model::fissure::{Fissure, FissureUnmapped},
+    worldstate_data::WorldstateData,
+    worldstate_model::{
+        alert::unmapped::AlertUnmapped,
+        fissure::{Fissure, FissureUnmapped},
+    },
 };
 
 #[derive(Debug, serde::Deserialize)]
@@ -12,16 +16,21 @@ use crate::{
 pub struct WorldStateUnmapped {
     #[serde(rename = "ActiveMissions")]
     pub fissures: Vec<FissureUnmapped>,
+
+    pub alerts: Vec<AlertUnmapped>,
 }
 
 impl WorldStateUnmapped {
-    pub fn map_worldstate(self, exports: Exports) -> Option<WorldState> {
-        let custom_maps = CustomMaps::from_exports(&exports);
-
+    pub fn map_worldstate(
+        self,
+        exports: &Exports,
+        custom_maps: &CustomMaps,
+        worldstate_data: &WorldstateData,
+    ) -> Option<WorldState> {
         let fissures = self
             .fissures
             .into_iter()
-            .map(|unmapped_fissure| unmapped_fissure.map(&exports, &custom_maps))
+            .map(|unmapped_fissure| unmapped_fissure.map(exports, custom_maps, worldstate_data))
             .collect::<Option<Vec<_>>>()?;
 
         Some(WorldState { fissures })

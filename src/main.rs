@@ -3,6 +3,7 @@ pub mod custom_maps;
 pub mod manifest_entries;
 pub mod manifests;
 pub mod world_state;
+pub mod worldstate_data;
 pub mod worldstate_model;
 
 use std::{error::Error, fs, path::Path};
@@ -10,7 +11,12 @@ use std::{error::Error, fs, path::Path};
 use reqwest::blocking::get;
 use serde::de::DeserializeOwned;
 
-use crate::{manifests::Exports, world_state::WorldStateUnmapped};
+use crate::{
+    custom_maps::CustomMaps,
+    manifests::Exports,
+    world_state::WorldStateUnmapped,
+    worldstate_data::WorldstateData,
+};
 
 type BoxDynError = Box<dyn Error>;
 
@@ -54,14 +60,12 @@ fn get_export() -> Result<Exports, BoxDynError> {
 
 fn main() -> Result<(), BoxDynError> {
     let exports = get_export()?;
+    let custom_maps = CustomMaps::from_exports(&exports);
+    let worldstate_data = WorldstateData::new("data/")?;
 
-    // let fissures = get("https://api.warframe.com/cdn/worldState.php")?
-    //     .json::<WorldStateUnmapped>()?
-    //     .map_worldstate(exports)
-    //     .ok_or("Failed to map worldstate")?;
     let fissures =
         serde_json::from_str::<WorldStateUnmapped>(&fs::read_to_string("worldstate.json")?)?
-            .map_worldstate(exports)
+            .map_worldstate(&exports, &custom_maps, &worldstate_data)
             .ok_or("Failed to map worldstate")?;
 
     fs::write("fissures.json", serde_json::to_string_pretty(&fissures)?)?;

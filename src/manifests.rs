@@ -63,12 +63,12 @@ impl FromStr for PublicExportIndex {
 }
 
 all_the_exports! {
-    struct ExportRegions(RegionManifestEntry),
+    struct ExportRegions(RegionManifestEntry)
 }
 
 macro_rules! all_the_exports {
     (
-        $( struct $ident:ident( $inner_type:ty ) ),*,
+        $( struct $ident:ident( $inner_type:ty ) ),*
     ) => {
         paste::paste! {
             $(
@@ -82,8 +82,8 @@ macro_rules! all_the_exports {
             #[derive(Clone, serde::Serialize, serde::Deserialize)]
             pub struct Exports {
                 $(
-                    pub [<$ident:snake>]: $ident
-                )*,
+                    pub [<$ident:snake>]: $ident,
+                )*
             }
         }
     };

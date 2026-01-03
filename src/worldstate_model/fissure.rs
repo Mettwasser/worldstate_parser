@@ -2,9 +2,11 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    core::{Mappable, deserialize_mongo_date},
+    core::Mappable,
     custom_maps::{CustomMaps, solnode_to_region::Region},
     manifests::Exports,
+    worldstate_data::WorldstateData,
+    worldstate_model::{Id, deserialize_mongo_date},
 };
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
@@ -63,9 +65,14 @@ pub struct FissureUnmapped {
 }
 
 impl Mappable for FissureUnmapped {
-    type MapTo = Fissure;
+    type MapTo = Option<Fissure>;
 
-    fn map(self, _export: &Exports, custom_maps: &CustomMaps) -> Option<Fissure> {
+    fn map(
+        self,
+        _export: &Exports,
+        custom_maps: &CustomMaps,
+        _worldstate_data: &WorldstateData,
+    ) -> Self::MapTo {
         let region = custom_maps.solnode_to_region.get(&self.node).cloned()?;
 
         Some(Fissure {
@@ -78,12 +85,6 @@ impl Mappable for FissureUnmapped {
             is_steel_path: self.hard,
         })
     }
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct Id {
-    #[serde(rename = "$oid")]
-    pub oid: String,
 }
 
 #[cfg(test)]

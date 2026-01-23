@@ -50,7 +50,7 @@ impl Resolve<()> for SortieBossFaction {
 mod tests {
     use std::fs::read_to_string;
 
-    use crate::wfcd_worldstate_data::sortie_data::SortieData;
+    use crate::wfcd_data::sortie_data::SortieData;
 
     #[test]
     fn test_deserialize() {

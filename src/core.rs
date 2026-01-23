@@ -6,7 +6,7 @@ use std::marker::PhantomData;
 use heck::ToTitleCase;
 use serde::{Deserialize, Serialize};
 
-use crate::{custom_maps::CustomMaps, manifests::Exports, wfcd_worldstate_data::WorldstateData};
+use crate::{custom_maps::CustomMaps, manifests::Exports, wfcd_data::WorldstateData};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Context<'a> {
@@ -59,6 +59,7 @@ pub mod resolve_with {
     pub struct LanguageItems;
     pub struct SolNodes;
     pub struct LastSegment;
+    pub struct RotationalReward;
 
     pub mod sortie {
         pub struct Modifier;

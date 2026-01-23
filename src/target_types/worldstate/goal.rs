@@ -12,13 +12,13 @@ pub struct Goal {
 
     pub expiry: DateTime<Utc>,
 
-    pub grace_period: DateTime<Utc>,
+    pub grace_period: Option<DateTime<Utc>>,
 
     pub count: u64,
 
     pub goal: u64,
 
-    pub success: u64,
+    pub success: Option<u64>,
 
     pub personal: bool,
 
@@ -26,7 +26,7 @@ pub struct Goal {
 
     pub tool_tip: String,
 
-    pub icon: String,
+    pub icon: Option<String>,
 
     pub tag: String,
 

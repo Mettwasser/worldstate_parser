@@ -3,7 +3,7 @@ pub mod custom_maps;
 pub mod manifest_entries;
 pub mod manifests;
 pub mod target_types;
-pub(crate) mod wfcd_worldstate_data;
+pub(crate) mod wfcd_data;
 pub mod world_state;
 pub(crate) mod worldstate_model;
 
@@ -17,7 +17,7 @@ use crate::{
     core::Context,
     custom_maps::CustomMaps,
     manifests::Exports,
-    wfcd_worldstate_data::WorldstateData,
+    wfcd_data::WorldstateData,
     world_state::WorldStateUnmapped,
 };
 
@@ -81,8 +81,8 @@ fn get_export() -> Result<Exports, BoxDynError> {
 
 fn main() -> Result<(), BoxDynError> {
     let exports = get_export()?;
-    let custom_maps = CustomMaps::from_exports(&exports);
-    let worldstate_data = WorldstateData::new("data/")?;
+    let custom_maps = CustomMaps::new(&exports);
+    let worldstate_data = WorldstateData::new("data/", "drops/")?;
 
     let ctx = Context {
         custom_maps: &custom_maps,

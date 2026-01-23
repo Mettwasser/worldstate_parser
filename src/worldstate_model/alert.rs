@@ -87,7 +87,7 @@ pub struct AlertUnmapped {
 
     tag: String,
 
-    icon: String,
+    icon: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -112,7 +112,7 @@ pub struct MissionInfoUnmapped {
 
     difficulty: i64,
 
-    seed: i64,
+    seed: Option<i64>,
 
     mission_reward: MissionRewardUnmapped,
 

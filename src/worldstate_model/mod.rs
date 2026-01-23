@@ -1,9 +1,23 @@
+use std::{fmt, sync::LazyLock};
+
 use chrono::{DateTime, TimeZone, Utc};
-use serde::{Deserialize, Deserializer, Serialize};
+use regex::Regex;
+use serde::{
+    Deserialize,
+    Deserializer,
+    Serialize,
+    de::{self, Visitor},
+};
 
 use crate::{
-    core::Resolve,
-    target_types::{faction::Faction, language::Language, mission_type::MissionType},
+    core::{Context, InternalPath, Resolve, resolve_with},
+    target_types::{
+        faction::Faction,
+        language::Language,
+        mission_type::MissionType,
+        worldstate::syndicate::SyndicateType,
+    },
+    wfcd_data::bounty_rewards::{Bounty, DropItem},
 };
 
 pub mod alert;
@@ -12,6 +26,7 @@ pub mod event;
 pub mod fissure;
 pub mod goal;
 pub mod sortie;
+pub mod syndicate_mission;
 
 pub fn deserialize_mongo_date<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
 where
@@ -263,7 +278,7 @@ impl Resolve<()> for WorldstateLanguage {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
 pub enum WorldstateSyndicateType {
     ArbitersSyndicate,
     NecraloidSyndicate,
@@ -273,24 +288,10 @@ pub enum WorldstateSyndicateType {
     NewLokaSyndicate,
     NightcapJournalSyndicate,
     QuillsSyndicate,
-    RadioLegion3Syndicate,
-    RadioLegion2Syndicate,
-    PerrinSyndicate,
-    RadioLegionIntermission10Syndicate,
-    RadioLegionIntermission11Syndicate,
-    RadioLegionIntermission13Syndicate,
-    RadioLegionIntermission12Syndicate,
-    RadioLegionIntermission2Syndicate,
-    RadioLegionIntermission3Syndicate,
-    RadioLegionIntermission14Syndicate,
-    RadioLegionIntermission4Syndicate,
-    RadioLegionIntermission6Syndicate,
-    RadioLegionIntermission5Syndicate,
-    RadioLegionIntermission9Syndicate,
-    RadioLegionIntermission7Syndicate,
-    RadioLegionIntermission8Syndicate,
     RadioLegionSyndicate,
-    RadioLegionIntermissionSyndicate,
+    RadioLegion2Syndicate,
+    RadioLegion3Syndicate,
+    PerrinSyndicate,
     VoxSyndicate,
     RedVeilSyndicate,
     VentKidsSyndicate,
@@ -301,4 +302,219 @@ pub enum WorldstateSyndicateType {
     CetusSyndicate,
     SolarisSyndicate,
     ZarimanSyndicate,
+
+    RadioLegionIntermission(u8),
+}
+
+impl Resolve<()> for WorldstateSyndicateType {
+    type Output = SyndicateType;
+
+    fn resolve(self, _ctx: ()) -> Self::Output {
+        match self {
+            WorldstateSyndicateType::ArbitersSyndicate => SyndicateType::ArbitersSyndicate,
+            WorldstateSyndicateType::NecraloidSyndicate => SyndicateType::NecraloidSyndicate,
+            WorldstateSyndicateType::EventSyndicate => SyndicateType::EventSyndicate,
+            WorldstateSyndicateType::CephalonSudaSyndicate => SyndicateType::CephalonSudaSyndicate,
+            WorldstateSyndicateType::KahlSyndicate => SyndicateType::KahlSyndicate,
+            WorldstateSyndicateType::NewLokaSyndicate => SyndicateType::NewLokaSyndicate,
+            WorldstateSyndicateType::NightcapJournalSyndicate => {
+                SyndicateType::NightcapJournalSyndicate
+            },
+            WorldstateSyndicateType::QuillsSyndicate => SyndicateType::QuillsSyndicate,
+            WorldstateSyndicateType::RadioLegionSyndicate => SyndicateType::RadioLegionSyndicate,
+            WorldstateSyndicateType::RadioLegion2Syndicate => SyndicateType::RadioLegion2Syndicate,
+            WorldstateSyndicateType::RadioLegion3Syndicate => SyndicateType::RadioLegion3Syndicate,
+            WorldstateSyndicateType::PerrinSyndicate => SyndicateType::PerrinSyndicate,
+            WorldstateSyndicateType::VoxSyndicate => SyndicateType::VoxSyndicate,
+            WorldstateSyndicateType::RedVeilSyndicate => SyndicateType::RedVeilSyndicate,
+            WorldstateSyndicateType::VentKidsSyndicate => SyndicateType::VentKidsSyndicate,
+            WorldstateSyndicateType::SteelMeridianSyndicate => {
+                SyndicateType::SteelMeridianSyndicate
+            },
+            WorldstateSyndicateType::EntratiLabSyndicate => SyndicateType::EntratiLabSyndicate,
+            WorldstateSyndicateType::HexSyndicate => SyndicateType::HexSyndicate,
+            WorldstateSyndicateType::EntratiSyndicate => SyndicateType::EntratiSyndicate,
+            WorldstateSyndicateType::CetusSyndicate => SyndicateType::CetusSyndicate,
+            WorldstateSyndicateType::SolarisSyndicate => SyndicateType::SolarisSyndicate,
+            WorldstateSyndicateType::ZarimanSyndicate => SyndicateType::ZarimanSyndicate,
+            WorldstateSyndicateType::RadioLegionIntermission(i) => {
+                SyndicateType::RadioLegionIntermission(i)
+            },
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for WorldstateSyndicateType {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct SyndicateVisitor;
+
+        impl<'de> Visitor<'de> for SyndicateVisitor {
+            type Value = WorldstateSyndicateType;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                formatter.write_str("a valid syndicate string")
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+            where
+                E: de::Error,
+            {
+                use WorldstateSyndicateType::*;
+
+                // 1. Check exact matches for standard syndicates
+                match value {
+                    "ArbitersSyndicate" => Ok(ArbitersSyndicate),
+                    "NecraloidSyndicate" => Ok(NecraloidSyndicate),
+                    "EventSyndicate" => Ok(EventSyndicate),
+                    "CephalonSudaSyndicate" => Ok(CephalonSudaSyndicate),
+                    "KahlSyndicate" => Ok(KahlSyndicate),
+                    "NewLokaSyndicate" => Ok(NewLokaSyndicate),
+                    "NightcapJournalSyndicate" => Ok(NightcapJournalSyndicate),
+                    "QuillsSyndicate" => Ok(QuillsSyndicate),
+                    "RadioLegionSyndicate" => Ok(RadioLegionSyndicate),
+                    "RadioLegion2Syndicate" => Ok(RadioLegion2Syndicate),
+                    "RadioLegion3Syndicate" => Ok(RadioLegion3Syndicate),
+                    "PerrinSyndicate" => Ok(PerrinSyndicate),
+                    "VoxSyndicate" => Ok(VoxSyndicate),
+                    "RedVeilSyndicate" => Ok(RedVeilSyndicate),
+                    "VentKidsSyndicate" => Ok(VentKidsSyndicate),
+                    "SteelMeridianSyndicate" => Ok(SteelMeridianSyndicate),
+                    "EntratiLabSyndicate" => Ok(EntratiLabSyndicate),
+                    "HexSyndicate" => Ok(HexSyndicate),
+                    "EntratiSyndicate" => Ok(EntratiSyndicate),
+                    "CetusSyndicate" => Ok(CetusSyndicate),
+                    "SolarisSyndicate" => Ok(SolarisSyndicate),
+                    "ZarimanSyndicate" => Ok(ZarimanSyndicate),
+
+                    // 2. Handle Intermission logic
+                    _ => {
+                        if let Some(inner) = value.strip_prefix("RadioLegionIntermission")
+                            && let Some(number_part) = inner.strip_suffix("Syndicate")
+                        {
+                            // If empty, it's the first one (implied 1)
+                            if number_part.is_empty() {
+                                return Ok(RadioLegionIntermission(1));
+                            }
+                            // Otherwise parse the number (e.g., "12")
+                            if let Ok(n) = number_part.parse::<u8>() {
+                                return Ok(RadioLegionIntermission(n));
+                            }
+                        }
+                        Err(E::custom(format!("Unknown syndicate type: {}", value)))
+                    },
+                }
+            }
+        }
+
+        deserializer.deserialize_str(SyndicateVisitor)
+    }
+}
+
+static BOUNTY_REWARD_REGEX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("Tier(?:(?:[ABCDE])|Narmer)Table([ABC])Rewards").unwrap());
+
+static GHOUL_REWARD_REGEX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("GhoulBountyTable([AB])Rewards").unwrap());
+
+#[derive(Debug, Clone)]
+pub struct RotationalRewardContext<'a> {
+    pub inner_ctx: Context<'a>,
+    pub syndicate_type: WorldstateSyndicateType,
+    pub resource: String,
+    pub min_level: u64,
+    pub max_level: u64,
+    pub is_vault: bool,
+}
+
+fn lookup_bounty(
+    level_string: &str,
+    bounty_tier: &str,
+    bounty_collection: &[Bounty],
+) -> Option<Vec<DropItem>> {
+    bounty_collection
+        .iter()
+        .find(|bounty| bounty.bounty_level == level_string)
+        .and_then(|bounty| bounty.rewards.get(bounty_tier))
+        .cloned()
+}
+
+impl Resolve<RotationalRewardContext<'_>> for InternalPath<resolve_with::RotationalReward> {
+    type Output = Option<Vec<DropItem>>;
+
+    fn resolve(
+        self,
+        RotationalRewardContext {
+            inner_ctx: ctx,
+            syndicate_type,
+            resource,
+            min_level,
+            max_level,
+            is_vault,
+        }: RotationalRewardContext<'_>,
+    ) -> Self::Output {
+        let table = resource.split('/').next_back()?;
+
+        let level_range_string = format!("{} - {}", min_level, max_level);
+
+        let bounty_tier = BOUNTY_REWARD_REGEX
+            .captures(table)
+            .and_then(|cap| cap.get(1))
+            .map(|group| group.as_str())
+            .unwrap_or("A");
+
+        match syndicate_type {
+            WorldstateSyndicateType::CetusSyndicate => {
+                let level_string;
+                let tier;
+
+                if let Some(ghoul_tier) = GHOUL_REWARD_REGEX
+                    .captures(table)
+                    .and_then(|cap| cap.get(1))
+                    .map(|group| group.as_str())
+                {
+                    level_string = format!("Level {level_range_string} Ghoul Bounty");
+                    tier = ghoul_tier;
+                } else {
+                    level_string = format!("Level {level_range_string} Cetus Bounty");
+                    tier = bounty_tier;
+                }
+
+                lookup_bounty(
+                    &level_string,
+                    tier,
+                    &ctx.worldstate_data.bounty_rewards.cetus,
+                )
+            },
+
+            WorldstateSyndicateType::EntratiSyndicate => {
+                let variant = match is_vault {
+                    true => "Isolation Vault",
+                    false => "Cambion Drift Bounty",
+                };
+
+                let level_string = format!("Level {level_range_string} {variant}");
+
+                lookup_bounty(
+                    &level_string,
+                    bounty_tier,
+                    &ctx.worldstate_data.bounty_rewards.deimos,
+                )
+            },
+
+            WorldstateSyndicateType::SolarisSyndicate => {
+                let level_string = format!("Level {level_range_string} Orb Vallis Bounty");
+
+                lookup_bounty(
+                    &level_string,
+                    bounty_tier,
+                    &ctx.worldstate_data.bounty_rewards.solaris,
+                )
+            },
+
+            _ => None,
+        }
+    }
 }

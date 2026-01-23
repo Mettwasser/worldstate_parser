@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     core::{Context, Resolve, resolve_with},
-    wfcd_worldstate_data::sortie_data::Boss,
+    wfcd_data::sortie_data::Boss,
 };
 
 #[derive(derive_more::Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]

@@ -17,7 +17,7 @@ pub struct Alert {
 
     pub tag: String,
 
-    pub icon: String,
+    pub icon: Option<String>,
 }
 
 #[skip_serializing_none]
@@ -42,7 +42,7 @@ pub struct MissionInfo {
 
     pub difficulty: i64,
 
-    pub seed: i64,
+    pub seed: Option<i64>,
 
     pub mission_reward: MissionReward,
 

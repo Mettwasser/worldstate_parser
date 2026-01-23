@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::target_types::{mission_type::MissionType, node::Node};
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
-#[serde(rename_all = "PascalCase")]
+#[serde(rename_all = "camelCase")]
 pub struct ArchonHunt {
     pub id: String,
 

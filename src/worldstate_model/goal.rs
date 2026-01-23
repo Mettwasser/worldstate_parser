@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     core::{Context, InternalPath, Resolve, resolve_with, sol_node::SolNode},
     target_types::worldstate::goal::Goal,
-    worldstate_model::{Id, deserialize_mongo_date},
+    worldstate_model::{Id, deserialize_mongo_date, deserialize_mongo_date_opt},
 };
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -19,14 +19,14 @@ pub struct GoalUnmapped {
     #[serde(deserialize_with = "deserialize_mongo_date")]
     expiry: DateTime<Utc>,
 
-    #[serde(deserialize_with = "deserialize_mongo_date")]
-    grace_period: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize_mongo_date_opt", default)]
+    grace_period: Option<DateTime<Utc>>,
 
     count: u64,
 
     goal: u64,
 
-    success: u64,
+    success: Option<u64>,
 
     personal: bool,
 
@@ -34,7 +34,7 @@ pub struct GoalUnmapped {
 
     tool_tip: InternalPath<resolve_with::LanguageItems>,
 
-    icon: String,
+    icon: Option<String>,
 
     tag: String,
 

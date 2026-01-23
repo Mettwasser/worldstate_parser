@@ -4,3 +4,5 @@ pub mod event;
 pub mod fissure;
 pub mod goal;
 pub mod sortie;
+pub mod syndicate;
+pub mod syndicate_mission;

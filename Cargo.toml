@@ -9,9 +9,13 @@ derive_more = { version = "2.1.1", features = ["debug", "display", "from_str"] }
 heck = "0.5.0"
 lzma-rs = "0.3.0"
 paste = "1.0.15"
+regex = "1.12.2"
 reqwest = { version = "0.13.1", features = ["blocking", "json"] }
 serde = "1.0.228"
 serde_json = "1.0.148"
 serde_repr = "0.1.20"
 serde_with = { version = "3.16.1", features = ["chrono"] }
 thiserror = "2.0.17"
+
+[dev-dependencies]
+serde_path_to_error = "0.1.20"

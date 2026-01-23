@@ -9,6 +9,7 @@ use crate::{
         fissure::Fissure,
         goal::Goal,
         sortie::Sortie,
+        syndicate_mission::SyndicateMission,
     },
     worldstate_model::{
         alert::AlertUnmapped,
@@ -17,6 +18,7 @@ use crate::{
         fissure::FissureUnmapped,
         goal::GoalUnmapped,
         sortie::SortieUnmapped,
+        syndicate_mission::SyndicateMissionUnmapped,
     },
 };
 
@@ -36,6 +38,8 @@ pub(crate) struct WorldStateUnmapped {
 
     #[serde(rename = "LiteSorties")]
     pub archon_hunt: Vec<ArchonHuntUnmapped>,
+
+    pub syndicate_missions: Vec<SyndicateMissionUnmapped>,
 }
 
 impl WorldStateUnmapped {
@@ -46,6 +50,7 @@ impl WorldStateUnmapped {
         let sorties = self.sorties.resolve(ctx);
         let goals = self.goals.resolve(ctx);
         let archon_hunt = self.archon_hunt.resolve(ctx);
+        let syndicate_missions = self.syndicate_missions.resolve(ctx);
 
         Some(WorldState {
             archon_hunt,
@@ -54,6 +59,7 @@ impl WorldStateUnmapped {
             fissures,
             alerts,
             sorties,
+            syndicate_missions,
         })
     }
 }
@@ -72,4 +78,6 @@ pub struct WorldState {
     pub goals: Vec<Goal>,
 
     pub archon_hunt: Vec<ArchonHunt>,
+
+    pub syndicate_missions: Vec<SyndicateMission>,
 }

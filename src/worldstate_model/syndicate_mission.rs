@@ -123,7 +123,7 @@ impl Resolve<(Context<'_>, WorldstateSyndicateType)> for MissionDetailsUnmapped 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct JobUnmapped {
-    pub job_type: Option<InternalPath<resolve_with::LanguageItemsLower>>,
+    pub job_type: Option<InternalPath<resolve_with::LanguageItems>>,
 
     pub rewards: InternalPath<resolve_with::RotationalReward>,
 

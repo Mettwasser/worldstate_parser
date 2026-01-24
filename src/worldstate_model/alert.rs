@@ -3,8 +3,17 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     core::{Context, InternalPath, Resolve, resolve_with, sol_node::SolNode},
-    target_types::worldstate::alert::{Alert, CountedItem, MissionInfo, MissionReward},
-    worldstate_model::{Id, WorldstateFaction, WorldstateMissionType, deserialize_mongo_date},
+    target_types::worldstate::{
+        alert::{Alert, MissionInfo, MissionReward},
+        counted_item::CountedItem,
+    },
+    worldstate_model::{
+        Id,
+        WorldstateFaction,
+        WorldstateMissionType,
+        counted_item::CountedItemUnmapped,
+        deserialize_mongo_date,
+    },
 };
 
 impl Resolve<Context<'_>> for AlertUnmapped {
@@ -130,12 +139,4 @@ pub struct MissionRewardUnmapped {
 
     #[serde(default)]
     counted_items: Vec<CountedItemUnmapped>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "PascalCase")]
-pub struct CountedItemUnmapped {
-    item_type: InternalPath<resolve_with::LanguageItems>,
-
-    item_count: i64,
 }

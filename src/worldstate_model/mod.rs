@@ -26,8 +26,10 @@ pub mod event;
 pub mod fissure;
 pub mod flash_sale;
 pub mod goal;
+pub mod invasion;
 pub mod sortie;
 pub mod syndicate_mission;
+pub mod counted_item;
 
 pub fn deserialize_mongo_date<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
 where

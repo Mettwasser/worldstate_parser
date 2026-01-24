@@ -1,9 +1,11 @@
 pub mod alert;
 pub mod archon_hunt;
+pub mod counted_item;
 pub mod event;
 pub mod fissure;
 pub mod flash_sale;
 pub mod goal;
+pub mod invasion;
 pub mod sortie;
 pub mod syndicate;
 pub mod syndicate_mission;

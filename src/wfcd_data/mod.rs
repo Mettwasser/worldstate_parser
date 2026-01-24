@@ -2,7 +2,7 @@ pub mod bounty_rewards;
 pub mod language_item;
 pub mod sortie_data;
 
-use std::{fs, io, path::Path};
+use std::{collections::HashMap, fs, io, path::Path};
 
 use serde::de::DeserializeOwned;
 
@@ -33,18 +33,21 @@ pub struct WorldstateData {
     pub language_items: LanguageItemMap,
     pub sortie_data: SortieData,
     pub bounty_rewards: BountyRewards,
+    pub hubs: HashMap<String, String>,
 }
 
 impl WorldstateData {
     pub fn new(
         data_dir: impl AsRef<Path>,
         drop_dir: impl AsRef<Path>,
+        assets_dir: impl AsRef<Path>,
     ) -> Result<Self, WorldstateDataError> {
         let data_dir = data_dir.as_ref();
         Ok(Self {
             language_items: init(data_dir, "languages")?,
             sortie_data: init(data_dir, "sortieData")?,
             bounty_rewards: init(drop_dir, "data")?,
+            hubs: init(assets_dir, "relays")?,
         })
     }
 }

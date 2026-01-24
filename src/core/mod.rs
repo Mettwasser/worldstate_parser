@@ -60,6 +60,7 @@ pub mod resolve_with {
     pub struct SolNodes;
     pub struct LastSegment;
     pub struct RotationalReward;
+    pub struct Hubs;
 
     pub mod sortie {
         pub struct Modifier;

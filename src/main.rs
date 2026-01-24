@@ -82,7 +82,7 @@ fn get_export() -> Result<Exports, BoxDynError> {
 fn main() -> Result<(), BoxDynError> {
     let exports = get_export()?;
     let custom_maps = CustomMaps::new(&exports);
-    let worldstate_data = WorldstateData::new("data/", "drops/")?;
+    let worldstate_data = WorldstateData::new("data/", "drops/", "assets/")?;
 
     let ctx = Context {
         custom_maps: &custom_maps,

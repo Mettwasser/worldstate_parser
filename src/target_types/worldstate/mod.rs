@@ -9,3 +9,4 @@ pub mod invasion;
 pub mod sortie;
 pub mod syndicate;
 pub mod syndicate_mission;
+pub mod void_trader;

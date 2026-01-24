@@ -8,9 +8,9 @@ use crate::target_types::{faction::Faction, node::Node, worldstate::counted_item
 pub struct Invasion {
     pub id: String,
 
-    pub faction: Faction,
+    pub attacking_faction: Faction,
 
-    pub defender_faction: Faction,
+    pub defending_faction: Faction,
 
     pub node: Option<Node>,
 
@@ -26,18 +26,7 @@ pub struct Invasion {
 
     pub attacker_reward: Vec<CountedItem>,
 
-    pub attacker_mission_info: InvasionMissionInfo,
-
     pub defender_reward: Vec<CountedItem>,
 
-    pub defender_mission_info: InvasionMissionInfo,
-
     pub activation: DateTime<Utc>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
-pub struct InvasionMissionInfo {
-    pub seed: i64,
-
-    pub faction: Faction,
 }

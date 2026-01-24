@@ -22,6 +22,7 @@ use crate::{
 
 pub mod alert;
 pub mod archon_hunt;
+pub mod counted_item;
 pub mod event;
 pub mod fissure;
 pub mod flash_sale;
@@ -29,7 +30,7 @@ pub mod goal;
 pub mod invasion;
 pub mod sortie;
 pub mod syndicate_mission;
-pub mod counted_item;
+pub mod void_trader;
 
 pub fn deserialize_mongo_date<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
 where

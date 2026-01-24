@@ -38,3 +38,13 @@ impl<'a> Resolve<Context<'a>> for ResolvableString<resolve_with::sortie::Boss> {
         ctx.worldstate_data.sortie_data.bosses.get(&self.0)
     }
 }
+
+impl Resolve<Context<'_>> for ResolvableString<resolve_with::Hubs> {
+    type Output = String;
+
+    fn resolve(self, ctx: Context<'_>) -> Self::Output {
+        let hubs = &ctx.worldstate_data.hubs;
+
+        hubs.get(&self.0).cloned().unwrap_or(self.0)
+    }
+}

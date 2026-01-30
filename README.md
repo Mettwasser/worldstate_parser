@@ -14,7 +14,7 @@ cargo run
 
 You need a `worldstate.json`, the content of which you can grab [here](http://api.warframe.com/cdn/worldState.php).
 
-Additionally run the [nushell script](./fetch_data.nu) which will fetch the translation data.
+Additionally run the [nushell script](./init.nu) which will fetch the translation data.
 
 ## Translation Data
 

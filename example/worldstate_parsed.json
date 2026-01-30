@@ -7674,5 +7674,17 @@
             "expiry": "2026-01-29T22:10:01.403Z",
             "tier": "Axi"
         }
+    ],
+    "dailyDeals": [
+        {
+            "item": "Cestra",
+            "activation": "2026-01-29T21:00:00Z",
+            "expiry": "2026-01-30T23:00:00Z",
+            "discountPercentage": 50,
+            "originalPrice": 175,
+            "salePrice": 87,
+            "stock": 80,
+            "amountSold": 0
+        }
     ]
 }

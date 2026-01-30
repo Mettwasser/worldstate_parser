@@ -1,6 +1,7 @@
 pub mod alert;
 pub mod archon_hunt;
 pub mod counted_item;
+pub mod daily_deal;
 pub mod event;
 pub mod fissure;
 pub mod flash_sale;

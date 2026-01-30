@@ -5,6 +5,7 @@ use crate::{
     target_types::worldstate::{
         alert::Alert,
         archon_hunt::ArchonHunt,
+        daily_deal::DailyDeal,
         event::Event,
         fissure::Fissure,
         flash_sale::FlashSale,
@@ -19,6 +20,7 @@ use crate::{
     worldstate_model::{
         alert::AlertUnmapped,
         archon_hunt::ArchonHuntUnmapped,
+        daily_deal::DailyDealUnmapped,
         event::EventUnmapped,
         fissure::FissureUnmapped,
         flash_sale::FlashSaleUnmapped,
@@ -60,6 +62,8 @@ pub(crate) struct WorldStateUnmapped {
     pub prime_vault_traders: Vec<VaultTraderUnmapped>,
 
     pub void_storms: Vec<VoidStormUnmapped>,
+
+    pub daily_deals: Vec<DailyDealUnmapped>,
 }
 
 impl WorldStateUnmapped {
@@ -76,6 +80,7 @@ impl WorldStateUnmapped {
         let void_trader = self.void_traders.resolve(ctx).into_iter().next();
         let vault_trader = self.prime_vault_traders.resolve(ctx).into_iter().next();
         let void_storms = self.void_storms.resolve(ctx);
+        let daily_deals = self.daily_deals.resolve(ctx);
 
         Some(WorldState {
             archon_hunt,
@@ -90,6 +95,7 @@ impl WorldStateUnmapped {
             void_trader,
             vault_trader,
             void_storms,
+            daily_deals,
         })
     }
 }
@@ -120,4 +126,6 @@ pub struct WorldState {
     pub vault_trader: Option<VaultTrader>,
 
     pub void_storms: Vec<VoidStorm>,
+
+    pub daily_deals: Vec<DailyDeal>,
 }

@@ -4,7 +4,7 @@ pub mod manifest_entries;
 pub mod manifests;
 pub mod target_types;
 pub(crate) mod wfcd_data;
-pub mod world_state;
+pub mod worldstate;
 pub(crate) mod worldstate_model;
 
 use std::{error::Error, fs};
@@ -12,7 +12,7 @@ use std::{error::Error, fs};
 use serde::Serialize;
 use serde_json::Serializer;
 
-use crate::{core::Context, world_state::WorldStateUnmapped};
+use crate::{core::Context, worldstate::WorldStateUnmapped};
 
 type BoxDynError = Box<dyn Error>;
 

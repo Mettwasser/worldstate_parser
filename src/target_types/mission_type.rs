@@ -78,10 +78,22 @@ pub enum MissionType {
     /// The Missions from the Perita Rebellion
     Recall,
 
+    #[serde(rename(serialize = "Sanctuary Onslaught"))]
     SanctuaryOnslaught,
+
+    #[serde(rename(serialize = "Elite Sanctuary Onslaught"))]
     EliteSanctuaryOnslaught,
 
     Conclave,
+
+    Skirmish,
+
+    #[serde(rename(serialize = "Free Flight"))]
+    FreeFlight,
+
+    Orphix,
+
+    Volatile,
 
     Unknown,
 }

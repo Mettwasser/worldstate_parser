@@ -36,7 +36,7 @@ fn main() -> Result<(), BoxDynError> {
 
     let world_state_json = String::from_utf8(buf).unwrap();
 
-    fs::write("worldstate_parsed.json", world_state_json)?;
+    fs::write("example/worldstate_parsed.json", world_state_json)?;
 
     Ok(())
 }

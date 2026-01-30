@@ -14,7 +14,7 @@ export def search [
     ]
 
     if $list_files {
-        return (rg -il --no-ignore $pattern)
+        return (rg ...$flags -l $pattern)
     }
 
     if ($file | is-not-empty) {

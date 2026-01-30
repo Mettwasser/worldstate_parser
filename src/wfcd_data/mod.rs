@@ -51,7 +51,7 @@ impl WorldstateData {
             sortie_data: init(data_dir, "sortieData")?,
             rewards: init(drop_dir, "data")?,
             hubs: init(assets_dir, "relays")?,
-            archon_hunt_rewards: init(manual_assets_dir, "archon_hunt_rewards")?,
+            archon_hunt_rewards: init(manual_assets_dir, "archonHuntRewards")?,
         })
     }
 }

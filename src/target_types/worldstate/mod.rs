@@ -10,4 +10,5 @@ pub mod sortie;
 pub mod syndicate;
 pub mod syndicate_mission;
 pub mod vault_trader;
+pub mod void_storm;
 pub mod void_trader;

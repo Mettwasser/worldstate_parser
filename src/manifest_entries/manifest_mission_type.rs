@@ -49,6 +49,12 @@ pub enum ManifestMissionType {
     Descendia = 43,
     /// The Missions from the Perita Rebellion
     Recall = 44,
+
+    // Manual Data Points for mapping in manual assets for CrewBattleNodes
+    Orphix = 252,
+    Volatile = 253,
+    Skirmish = 254,
+    FreeFlight = 255,
 }
 
 impl Resolve<()> for ManifestMissionType {
@@ -88,6 +94,10 @@ impl Resolve<()> for ManifestMissionType {
             ManifestMissionType::Faceoff => MissionType::Faceoff,
             ManifestMissionType::Descendia => MissionType::Descendia,
             ManifestMissionType::Recall => MissionType::Recall,
+            ManifestMissionType::Skirmish => MissionType::Skirmish,
+            ManifestMissionType::FreeFlight => MissionType::FreeFlight,
+            ManifestMissionType::Orphix => MissionType::Orphix,
+            ManifestMissionType::Volatile => MissionType::Volatile,
         }
     }
 }

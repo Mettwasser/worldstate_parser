@@ -11,7 +11,8 @@ use crate::{
     BoxDynError,
     CACHE_DIR,
     custom_maps::CustomMaps,
-    manifests::{self, Exports},
+    manifest_entries::manifest_node::ManifestNode,
+    manifests::{self, ExportRegions, Exports},
     wfcd_data::WorldstateData,
 };
 
@@ -49,7 +50,11 @@ fn get_from_cache_or_fetch<T: DeserializeOwned>(manifest: &str) -> Result<T, Box
     Ok(serde_json::from_str(&item_json)?)
 }
 
-fn get_export() -> Result<Exports, BoxDynError> {
+pub struct ExportCreationContext<'a> {
+    crew_battle_nodes_json_path: &'a Path,
+}
+
+fn get_export(ctx: ExportCreationContext<'_>) -> Result<Exports, BoxDynError> {
     let file = get("https://origin.warframe.com/PublicExport/index_en.txt.lzma")?
         .bytes()?
         .to_vec();
@@ -62,8 +67,15 @@ fn get_export() -> Result<Exports, BoxDynError> {
 
     let export: manifests::PublicExportIndex = data.parse()?;
 
+    let crew_battle_nodes_json: Vec<ManifestNode> =
+        serde_json::from_str(&fs::read_to_string(ctx.crew_battle_nodes_json_path)?)?;
+
+    let mut export_regions: ExportRegions = get_from_cache_or_fetch(&export.regions)?;
+
+    export_regions.export_regions.extend(crew_battle_nodes_json);
+
     let exports = Exports {
-        export_regions: get_from_cache_or_fetch(&export.regions)?,
+        export_regions,
         export_relic_arcane: get_from_cache_or_fetch(&export.relic_arcane)?,
         export_customs: get_from_cache_or_fetch(&export.customs)?,
     };
@@ -79,7 +91,9 @@ pub struct Context {
 
 impl Context {
     pub fn new() -> Result<Self, BoxDynError> {
-        let exports = get_export()?;
+        let exports = get_export(ExportCreationContext {
+            crew_battle_nodes_json_path: Path::new("assets_manual/crewBattleNodes.json"),
+        })?;
         let custom_maps = CustomMaps::new(&exports);
         let worldstate_data = WorldstateData::new("data/", "drops/", "assets/", "assets_manual/")?;
 

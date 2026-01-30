@@ -14,9 +14,10 @@ pub struct VaultTrader {
 
     pub node: String,
 
-    pub manifest: Vec<VaultTraderManifest>,
+    pub shop: Vec<VaultTraderManifest>,
 
-    pub evergreen_manifest: Vec<VaultTraderManifest>,
+    /// Former Twitch Prime drops available for sale
+    pub twitch_prime_shop: Vec<VaultTraderManifest>,
 
     pub schedule_info: Vec<ScheduleInfo>,
 }

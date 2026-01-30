@@ -47,8 +47,8 @@ impl Resolve<ContextRef<'_>> for VaultTraderUnmapped {
             expiry: self.expiry,
             initial_start_date: self.initial_start_date,
             node: self.node.resolve(ctx),
-            manifest: self.manifest.resolve(ctx),
-            evergreen_manifest: self.evergreen_manifest.resolve(ctx),
+            shop: self.manifest.resolve(ctx),
+            twitch_prime_shop: self.evergreen_manifest.resolve(ctx),
             schedule_info: self.schedule_info.resolve(ctx),
         }
     }

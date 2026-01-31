@@ -4,3 +4,4 @@
 | -------------- | ----------- |
 | LiteSorties    | Archon Hunt |
 | ActiveMissions | Fissures    |
+| SeasonInfo     | Nightwave   |

@@ -48,3 +48,11 @@ impl Resolve<ContextRef<'_>> for ResolvableString<resolve_with::Hubs> {
         hubs.get(&self.0).cloned().unwrap_or(self.0)
     }
 }
+
+impl Resolve<()> for ResolvableString<resolve_with::TitleCase> {
+    type Output = String;
+
+    fn resolve(self, _ctx: ()) -> Self::Output {
+        self.0.to_title_case()
+    }
+}

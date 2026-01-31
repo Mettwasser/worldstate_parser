@@ -5,12 +5,14 @@ use crate::{
     target_types::worldstate::{
         alert::Alert,
         archon_hunt::ArchonHunt,
+        circuit::Circuit,
         daily_deal::DailyDeal,
         event::Event,
         fissure::Fissure,
         flash_sale::FlashSale,
         goal::Goal,
         invasion::Invasion,
+        nightwave::Nightwave,
         sortie::Sortie,
         syndicate_mission::SyndicateMission,
         vault_trader::VaultTrader,
@@ -20,12 +22,14 @@ use crate::{
     worldstate_model::{
         alert::AlertUnmapped,
         archon_hunt::ArchonHuntUnmapped,
+        circuit::CircuitUnmapped,
         daily_deal::DailyDealUnmapped,
         event::EventUnmapped,
         fissure::FissureUnmapped,
         flash_sale::FlashSaleUnmapped,
         goal::GoalUnmapped,
         invasion::InvasionUnmapped,
+        nightwave::NightwaveUnmapped,
         sortie::SortieUnmapped,
         syndicate_mission::SyndicateMissionUnmapped,
         vault_trader::VaultTraderUnmapped,
@@ -64,6 +68,12 @@ pub(crate) struct WorldStateUnmapped {
     pub void_storms: Vec<VoidStormUnmapped>,
 
     pub daily_deals: Vec<DailyDealUnmapped>,
+
+    #[serde(rename = "EndlessXpChoices")]
+    pub circuit: [CircuitUnmapped; 2],
+
+    #[serde(rename = "SeasonInfo")]
+    pub nightwave: NightwaveUnmapped,
 }
 
 impl WorldStateUnmapped {
@@ -81,6 +91,8 @@ impl WorldStateUnmapped {
         let vault_trader = self.prime_vault_traders.resolve(ctx).into_iter().next();
         let void_storms = self.void_storms.resolve(ctx);
         let daily_deals = self.daily_deals.resolve(ctx);
+        let circuit = self.circuit.resolve(());
+        let nightwave = self.nightwave.resolve(ctx);
 
         Some(WorldState {
             archon_hunt,
@@ -96,6 +108,8 @@ impl WorldStateUnmapped {
             vault_trader,
             void_storms,
             daily_deals,
+            circuit,
+            nightwave,
         })
     }
 }
@@ -128,4 +142,8 @@ pub struct WorldState {
     pub void_storms: Vec<VoidStorm>,
 
     pub daily_deals: Vec<DailyDeal>,
+
+    pub circuit: Circuit,
+
+    pub nightwave: Nightwave,
 }

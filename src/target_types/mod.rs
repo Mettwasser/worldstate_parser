@@ -1,4 +1,5 @@
 pub mod customs_entry;
+pub mod display_info;
 pub mod faction;
 pub mod language;
 pub mod mission_type;

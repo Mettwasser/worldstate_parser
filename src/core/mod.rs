@@ -13,6 +13,7 @@ use crate::{
     custom_maps::CustomMaps,
     manifest_entries::manifest_node::ManifestNode,
     manifests::{self, ExportRegions, Exports},
+    target_types::display_info::DisplayInfo,
     wfcd_data::WorldstateData,
 };
 
@@ -176,12 +177,14 @@ pub mod resolve_with {
 
     define_resolvers! {
         LanguageItems;
+        LanguageItemsWithDesc;
         SolNodes;
         LastSegment;
         RotationalReward;
         Hubs;
         VaultTraderItem;
         PrimePart;
+        TitleCase;
         sortie {
             Modifier;
             Boss;
@@ -253,6 +256,27 @@ impl Resolve<ContextRef<'_>> for InternalPath<resolve_with::LanguageItems> {
             .or_else(|| items.get(&self.path.to_lowercase()))
             .map(|item| item.value.clone())
             .unwrap_or_else(|| self.to_title_case().unwrap_or(self.path))
+    }
+}
+
+impl Resolve<ContextRef<'_>> for InternalPath<resolve_with::LanguageItemsWithDesc> {
+    type Output = DisplayInfo;
+
+    fn resolve(self, ctx: ContextRef) -> Self::Output {
+        let items = &ctx.worldstate_data.language_items;
+
+        items
+            .get(&self.path)
+            .or_else(|| items.get(&self.path.to_lowercase()))
+            .cloned()
+            .map(|language_item| language_item.resolve(()))
+            .unwrap_or_else(|| DisplayInfo {
+                title: self
+                    .last_segment()
+                    .map(|s| s.to_owned())
+                    .unwrap_or_default(),
+                description: None,
+            })
     }
 }
 

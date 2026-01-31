@@ -7686,5 +7686,119 @@
             "stock": 80,
             "amountSold": 0
         }
-    ]
+    ],
+    "circuit": {
+        "normal_choices": [
+            "Excalibur",
+            "Trinity",
+            "Ember"
+        ],
+        "steel_path_choices": [
+            "Lex",
+            "Magistar",
+            "Boltor",
+            "Bronco",
+            "Ceramic Dagger"
+        ]
+    },
+    "nightwave": {
+        "activation": "2025-10-27T18:19:59Z",
+        "expiry": "2026-05-25T00:00:00Z",
+        "affiliationTag": "RadioLegionIntermission14Syndicate",
+        "season": 16,
+        "phase": 0,
+        "params": "",
+        "activeChallenges": [
+            {
+                "id": "001700140000000000000191",
+                "challengeType": "Daily",
+                "standingAwarded": 1000,
+                "activation": "2026-01-27T00:00:00Z",
+                "expiry": "2026-01-30T00:00:00Z",
+                "title": "Swordsman",
+                "desc": "Complete a Mission with only a Melee Weapon equipped"
+            },
+            {
+                "id": "001700140000000000000192",
+                "challengeType": "Daily",
+                "standingAwarded": 1000,
+                "activation": "2026-01-28T00:00:00Z",
+                "expiry": "2026-01-31T00:00:00Z",
+                "title": "The Personal Touch",
+                "desc": "Place 1 decoration in your Orbiter"
+            },
+            {
+                "id": "001700140000000000000193",
+                "challengeType": "Daily",
+                "standingAwarded": 1000,
+                "activation": "2026-01-29T00:00:00Z",
+                "expiry": "2026-02-01T00:00:00Z",
+                "title": "Poisoner",
+                "desc": "Kill 150 Enemies with Toxin Damage"
+            },
+            {
+                "id": "001700140000000000000183",
+                "challengeType": "Weekly",
+                "standingAwarded": 4500,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Mission Complete XIV",
+                "desc": "Complete any 15 missions"
+            },
+            {
+                "id": "001700140000000000000184",
+                "challengeType": "Weekly",
+                "standingAwarded": 4500,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Eximus Eliminator XIV",
+                "desc": "Kill 30 Eximus"
+            },
+            {
+                "id": "001700140000000000000185",
+                "challengeType": "Weekly",
+                "standingAwarded": 4500,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Not a Warning Shot XIV",
+                "desc": "Kill 500 Enemies"
+            },
+            {
+                "id": "001700140000000000000186",
+                "challengeType": "Weekly",
+                "standingAwarded": 4500,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Supporter",
+                "desc": "Complete 5 Syndicate misions"
+            },
+            {
+                "id": "001700140000000000000187",
+                "challengeType": "Weekly",
+                "standingAwarded": 4500,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Unlock Relics",
+                "desc": "Unlock 3 Relics"
+            },
+            {
+                "id": "001700140000000000000188",
+                "challengeType": "Elite",
+                "standingAwarded": 7000,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Night Terror",
+                "desc": "Complete 5 Nightmare missions of any type"
+            },
+            {
+                "id": "001700140000000000000189",
+                "challengeType": "Elite",
+                "standingAwarded": 7000,
+                "activation": "2026-01-26T00:00:00Z",
+                "expiry": "2026-02-02T00:00:00Z",
+                "title": "Nothing but Profit",
+                "desc": "Kill The Exploiter Orb"
+            }
+        ]
+    }
 }

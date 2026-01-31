@@ -22,6 +22,7 @@ use crate::{
 
 pub mod alert;
 pub mod archon_hunt;
+pub mod circuit;
 pub mod counted_item;
 pub mod daily_deal;
 pub mod event;
@@ -29,6 +30,7 @@ pub mod fissure;
 pub mod flash_sale;
 pub mod goal;
 pub mod invasion;
+pub mod nightwave;
 pub mod sortie;
 pub mod syndicate_mission;
 pub mod vault_trader;

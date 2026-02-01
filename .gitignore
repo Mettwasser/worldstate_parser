@@ -1,8 +1,7 @@
-/target
+**/target
 /.vscode/
 /worldstate.json
 /worldstate_parsed.json
 /cache/
-/assets/
 /data/
 /drops/

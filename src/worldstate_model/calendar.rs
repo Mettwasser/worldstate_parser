@@ -124,7 +124,7 @@ impl Resolve<ContextRef<'_>> for CalendarDayUnmapped {
 pub enum CalendarEventUnmapped {
     #[serde(rename = "CET_CHALLENGE")]
     Challenge {
-        challenge: InternalPath<resolve_with::LanguageItemsWithDesc>,
+        challenge: InternalPath<resolve_with::LanguageItemWithDesc>,
     },
 
     #[serde(rename = "CET_REWARD")]
@@ -134,6 +134,6 @@ pub enum CalendarEventUnmapped {
 
     #[serde(rename = "CET_UPGRADE")]
     Upgrade {
-        upgrade: InternalPath<resolve_with::LanguageItemsWithDesc>,
+        upgrade: InternalPath<resolve_with::LanguageItemWithDesc>,
     },
 }

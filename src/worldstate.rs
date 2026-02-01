@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    ContextProvider,
     core::{ContextRef, Resolve},
     target_types::worldstate::{
         alert::Alert,
+        archimedea::ArchimedeaRoot,
         archon_hunt::ArchonHunt,
         calendar::Calendar,
         circuit::Circuit,
@@ -22,6 +24,7 @@ use crate::{
     },
     worldstate_model::{
         alert::AlertUnmapped,
+        archimedea::ArchimedeaUnmapped,
         archon_hunt::ArchonHuntUnmapped,
         calendar::CalendarUnmapped,
         circuit::CircuitUnmapped,
@@ -39,6 +42,33 @@ use crate::{
         void_trader::VoidTraderStateUnmapped,
     },
 };
+
+#[derive(Debug, thiserror::Error)]
+#[error(transparent)]
+pub enum WorldstateError {
+    WorldstateDeserialization(#[from] serde_json::Error),
+
+    Provider(Box<dyn std::error::Error + Send + Sync>),
+}
+
+pub async fn from_str<C, Data>(
+    s: &str,
+    provider: C,
+    data: Data,
+) -> Result<WorldState, WorldstateError>
+where
+    C: ContextProvider<Data>,
+    C::Err: Into<Box<dyn std::error::Error + Send + Sync>>,
+{
+    let ws_unmapped = serde_json::from_str::<WorldStateUnmapped>(s)?;
+
+    let ctx = provider
+        .get_ctx(data)
+        .await
+        .map_err(|err| WorldstateError::Provider(err.into()))?;
+
+    Ok(ws_unmapped.map(ctx.as_ref()))
+}
 
 #[derive(Debug, serde::Deserialize)]
 #[serde(rename_all = "PascalCase")]
@@ -79,10 +109,13 @@ pub(crate) struct WorldStateUnmapped {
 
     #[serde(rename = "KnownCalendarSeasons")]
     pub calendars: Vec<CalendarUnmapped>,
+
+    #[serde(rename = "Conquests")]
+    pub archimedea: Vec<ArchimedeaUnmapped>,
 }
 
 impl WorldStateUnmapped {
-    pub fn map_worldstate(self, ctx: ContextRef<'_>) -> Option<WorldState> {
+    pub fn map(self, ctx: ContextRef<'_>) -> WorldState {
         let events = self.events.resolve(());
         let fissures = self.fissures.resolve(ctx);
         let alerts = self.alerts.resolve(ctx);
@@ -99,8 +132,9 @@ impl WorldStateUnmapped {
         let circuit = self.circuit.resolve(());
         let nightwave = self.nightwave.resolve(ctx);
         let calendar = self.calendars.resolve(ctx).into_iter().next();
+        let archimedea = self.archimedea.resolve(ctx);
 
-        Some(WorldState {
+        WorldState {
             archon_hunt,
             goals,
             events,
@@ -117,7 +151,8 @@ impl WorldStateUnmapped {
             circuit,
             nightwave,
             calendar,
-        })
+            archimedea,
+        }
     }
 }
 
@@ -155,4 +190,6 @@ pub struct WorldState {
     pub nightwave: Nightwave,
 
     pub calendar: Option<Calendar>,
+
+    pub archimedea: ArchimedeaRoot,
 }

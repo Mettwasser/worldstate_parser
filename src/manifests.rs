@@ -26,8 +26,14 @@ pub struct PublicExportIndex {
     pub manifest: String,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, thiserror::Error)]
+#[error("Missing key in manifest: {key}")]
+pub struct MissingManifestKeyError {
+    key: String,
+}
+
 impl FromStr for PublicExportIndex {
-    type Err = String;
+    type Err = MissingManifestKeyError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut values: HashMap<&str, &str> = HashMap::new();
@@ -42,7 +48,9 @@ impl FromStr for PublicExportIndex {
             values
                 .get(key)
                 .map(|&v| v.to_owned())
-                .ok_or_else(|| format!("Missing key: {}", key))
+                .ok_or_else(|| MissingManifestKeyError {
+                    key: key.to_owned(),
+                })
         };
 
         Ok(PublicExportIndex {
@@ -76,7 +84,7 @@ macro_rules! all_the_exports {
     (
         $( struct $ident:ident( $inner_type:ty ); )*
     ) => {
-        paste::paste! {
+        pastey::paste! {
             $(
                 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq)]
                 #[serde(rename_all = "PascalCase")]

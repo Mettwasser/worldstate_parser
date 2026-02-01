@@ -2,7 +2,7 @@
     {
         "uniqueName": "CrewBattleNode556",
         "name": "Free Flight",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -14,7 +14,7 @@
     {
         "uniqueName": "CrewBattleNode502",
         "name": "Sover Strait",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -26,7 +26,7 @@
     {
         "uniqueName": "CrewBattleNode509",
         "name": "Iota Temple",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -38,7 +38,7 @@
     {
         "uniqueName": "CrewBattleNode518",
         "name": "Ogal Cluster",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -50,7 +50,7 @@
     {
         "uniqueName": "CrewBattleNode519",
         "name": "Korm's Belt",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -62,7 +62,7 @@
     {
         "uniqueName": "CrewBattleNode522",
         "name": "Bendar Cluster",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -74,7 +74,7 @@
     {
         "uniqueName": "CrewBattleNode559",
         "name": "Technocyte Coda Concert",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Earth Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -86,7 +86,7 @@
     {
         "uniqueName": "CrewBattleNode503",
         "name": "Bifrost Echo",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Venus Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -98,7 +98,7 @@
     {
         "uniqueName": "CrewBattleNode511",
         "name": "Beacon Shield Ring",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Venus Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -110,7 +110,7 @@
     {
         "uniqueName": "CrewBattleNode512",
         "name": "Orvin-Haarc",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Venus Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -122,7 +122,7 @@
     {
         "uniqueName": "CrewBattleNode513",
         "name": "Vesper Strait",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Venus Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -134,7 +134,7 @@
     {
         "uniqueName": "CrewBattleNode515",
         "name": "Luckless Expanse",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Venus Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -146,7 +146,7 @@
     {
         "uniqueName": "CrewBattleNode514",
         "name": "Falling Glory",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Venus Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -158,7 +158,7 @@
     {
         "uniqueName": "CrewBattleNode534",
         "name": "Lupal Pass",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Saturn Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -170,7 +170,7 @@
     {
         "uniqueName": "CrewBattleNode533",
         "name": "Nodo Gap",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Saturn Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -182,7 +182,7 @@
     {
         "uniqueName": "CrewBattleNode501",
         "name": "Mordo Cluster",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Saturn Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -194,7 +194,7 @@
     {
         "uniqueName": "CrewBattleNode557",
         "name": "Kuva Lich Confrontation",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Saturn Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -206,7 +206,7 @@
     {
         "uniqueName": "CrewBattleNode535",
         "name": "Vand Cluster",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Saturn Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -218,7 +218,7 @@
     {
         "uniqueName": "CrewBattleNode530",
         "name": "Kasio's Rest",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Saturn Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -230,7 +230,7 @@
     {
         "uniqueName": "CrewBattleNode504",
         "name": "Arva Vector",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -242,7 +242,7 @@
     {
         "uniqueName": "CrewBattleNode516",
         "name": "Nu-gua Mines",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -254,7 +254,7 @@
     {
         "uniqueName": "CrewBattleNode521",
         "name": "Enkidu Ice Drifts",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -266,7 +266,7 @@
     {
         "uniqueName": "CrewBattleNode523",
         "name": "Mammon's Prospect",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -278,7 +278,7 @@
     {
         "uniqueName": "CrewBattleNode525",
         "name": "Brom Cluster",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -290,7 +290,7 @@
     {
         "uniqueName": "CrewBattleNode524",
         "name": "Sovereign Grasp",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -302,7 +302,7 @@
     {
         "uniqueName": "CrewBattleNode558",
         "name": "Sister of Parvos Confrontation",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Neptune Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -314,7 +314,7 @@
     {
         "uniqueName": "CrewBattleNode526",
         "name": "Khufu Envoy",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Pluto Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -326,7 +326,7 @@
     {
         "uniqueName": "CrewBattleNode527",
         "name": "Seven Sirens",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Pluto Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -338,7 +338,7 @@
     {
         "uniqueName": "CrewBattleNode528",
         "name": "Obol Crossing",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Pluto Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -350,7 +350,7 @@
     {
         "uniqueName": "CrewBattleNode531",
         "name": "Fenton's Field",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Pluto Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -362,7 +362,7 @@
     {
         "uniqueName": "CrewBattleNode529",
         "name": "Profit Margin",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Pluto Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -374,7 +374,7 @@
     {
         "uniqueName": "CrewBattleNode536",
         "name": "Peregrine Axis",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Pluto Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -386,7 +386,7 @@
     {
         "uniqueName": "CrewBattleNode538",
         "name": "Calabash",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -398,7 +398,7 @@
     {
         "uniqueName": "CrewBattleNode539",
         "name": "Numina",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -410,7 +410,7 @@
     {
         "uniqueName": "CrewBattleNode540",
         "name": "Arc Silver",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -422,7 +422,7 @@
     {
         "uniqueName": "CrewBattleNode541",
         "name": "Erato",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -434,7 +434,7 @@
     {
         "uniqueName": "CrewBattleNode542",
         "name": "Lu-yan",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -446,7 +446,7 @@
     {
         "uniqueName": "CrewBattleNode543",
         "name": "Sabmir Cloud",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -458,7 +458,7 @@
     {
         "uniqueName": "CrewBattleNode553",
         "name": "Flexa",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -470,7 +470,7 @@
     {
         "uniqueName": "CrewBattleNode555",
         "name": "R-9 Cloud",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -482,7 +482,7 @@
     {
         "uniqueName": "CrewBattleNode550",
         "name": "Nsu Grid",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,
@@ -494,7 +494,7 @@
     {
         "uniqueName": "CrewBattleNode554",
         "name": "H-2 Cloud",
-        "systemIndex": 0,
+        "systemIndex": 255,
         "systemName": "Veil Proxima",
         "nodeType": 0,
         "masteryReq": 0,

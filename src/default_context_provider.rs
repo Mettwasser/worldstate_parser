@@ -1,0 +1,116 @@
+use std::{io, path::Path, string::FromUtf8Error};
+
+use reqwest::get;
+use serde::de::DeserializeOwned;
+use tokio::fs;
+use tracing::debug;
+
+use crate::{
+    ContextProvider,
+    PathContext,
+    core::Context,
+    custom_maps::CustomMaps,
+    manifest_entries::manifest_node::ManifestNode,
+    manifests::{self, ExportRegions, Exports, MissingManifestKeyError},
+    wfcd_data::{WorldstateData, WorldstateDataError},
+};
+
+pub const CACHE_DIR: &str = "./cache";
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct DefaultContextProvider;
+
+impl ContextProvider<PathContext<'_>> for DefaultContextProvider {
+    type Err = FetchError;
+
+    async fn get_ctx(&self, data: PathContext<'_>) -> Result<Context, Self::Err> {
+        let exports = get_export(&data.assets_dir.join("crewBattleNodes.json")).await?;
+        let custom_maps = CustomMaps::new(&exports);
+        let worldstate_data = WorldstateData::new(data)?;
+
+        Ok(Context {
+            custom_maps,
+            exports,
+            worldstate_data,
+        })
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error(transparent)]
+pub enum FetchError {
+    Io(#[from] io::Error),
+    Json(#[from] serde_json::Error),
+    Reqwest(#[from] reqwest::Error),
+    MissingKey(#[from] MissingManifestKeyError),
+    Utf8Error(#[from] FromUtf8Error),
+    DataError(#[from] WorldstateDataError),
+}
+
+async fn get_from_cache_or_fetch<T: DeserializeOwned>(manifest: &str) -> Result<T, FetchError> {
+    let path = Path::new(CACHE_DIR)
+        .join(manifest)
+        .with_added_extension("json");
+
+    if let Ok(cached) = fs::read_to_string(&path).await {
+        debug!("Using cache at {}", path.to_str().unwrap());
+        return Ok(serde_json::from_str(&cached)?);
+    }
+
+    let item_json = get(format!(
+        "http://content.warframe.com/PublicExport/Manifest/{manifest}"
+    ))
+    .await?
+    .text()
+    .await?;
+
+    let mut files = fs::read_dir(CACHE_DIR).await?;
+
+    while let Ok(Some(file)) = files.next_entry().await {
+        let file_name = file.file_name().into_string().unwrap();
+
+        if file_name.starts_with(
+            manifest
+                .split_once('!')
+                .expect("Manifest should be valid")
+                .0,
+        ) {
+            fs::remove_file(file_name).await?;
+        }
+    }
+
+    fs::write(path, &item_json).await?;
+
+    Ok(serde_json::from_str(&item_json)?)
+}
+
+async fn get_export(ctx: &Path) -> Result<Exports, FetchError> {
+    let file = get("https://origin.warframe.com/PublicExport/index_en.txt.lzma")
+        .await?
+        .bytes()
+        .await?
+        .to_vec();
+
+    let mut buffer: Vec<u8> = Vec::new();
+
+    lzma_rs::lzma_decompress(&mut file.as_slice(), &mut buffer).unwrap();
+
+    let data = String::from_utf8(buffer)?;
+
+    let export: manifests::PublicExportIndex = data.parse()?;
+
+    let crew_battle_nodes_json: Vec<ManifestNode> =
+        serde_json::from_str(&fs::read_to_string(ctx).await?)?;
+
+    let mut export_regions: ExportRegions = get_from_cache_or_fetch(&export.regions).await?;
+
+    export_regions.export_regions.extend(crew_battle_nodes_json);
+
+    let exports = Exports {
+        export_regions,
+        export_relic_arcane: get_from_cache_or_fetch(&export.relic_arcane).await?,
+        export_customs: get_from_cache_or_fetch(&export.customs).await?,
+    };
+
+    Ok(exports)
+}

@@ -1,17 +1,22 @@
-# Search for a pattern within a file (formatted as JSON) or recursively in the directory.
 export def search [
-    pattern: string       # The text or regex pattern to search for
-    --file (-f): path     # The specific file to open, convert to JSON, and search
-    --list-files (-l)     # Only list the filenames that contain matches
-    -A: int = 0           # Print NUM lines of trailing context after matching lines
-    -C: int = 0           # Print NUM lines of output context
+    pattern: string
+    --file (-f): path
+    --list-files (-l)
+    -A: int
+    -C: int
 ] {
-    let flags = [
+    mut flags = [
         "--ignore-case"
         "--no-ignore"
-        "-A" $A
-        "-C" $C
     ]
+
+    if ($A | is-not-empty) {
+        $flags ++= ["-A" $A]
+    }
+
+    if ($C | is-not-empty) {
+        $flags ++= ["-C" $C]
+    }
 
     if $list_files {
         return (rg ...$flags -l $pattern)

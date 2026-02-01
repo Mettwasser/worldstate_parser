@@ -3,88 +3,18 @@ pub mod resolvable_string;
 pub(crate) mod sol_node;
 pub mod vault_trader_resolve;
 
-use std::{fs, marker::PhantomData, path::Path};
+use std::marker::PhantomData;
 
 use heck::ToTitleCase;
-use reqwest::blocking::get;
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Serialize};
 
 use crate::{
-    BoxDynError,
-    CACHE_DIR,
     custom_maps::CustomMaps,
-    manifest_entries::manifest_node::ManifestNode,
-    manifests::{self, ExportRegions, Exports},
+    manifests::Exports,
     target_types::display_info::DisplayInfo,
     wfcd_data::WorldstateData,
 };
 
-fn get_from_cache_or_fetch<T: DeserializeOwned>(manifest: &str) -> Result<T, BoxDynError> {
-    let path = Path::new(CACHE_DIR)
-        .join(manifest)
-        .with_added_extension("json");
-
-    if let Ok(cached) = fs::read_to_string(&path) {
-        println!("Using cache at {}", path.to_str().unwrap());
-        return Ok(serde_json::from_str(&cached)?);
-    }
-
-    let item_json = get(format!(
-        "http://content.warframe.com/PublicExport/Manifest/{}",
-        manifest
-    ))?
-    .text()?;
-
-    for file in fs::read_dir(CACHE_DIR)? {
-        let file_name = file?.file_name().into_string().unwrap();
-
-        if file_name.starts_with(
-            manifest
-                .split_once('!')
-                .expect("Manifest should be valid")
-                .0,
-        ) {
-            fs::remove_file(file_name)?;
-        }
-    }
-
-    fs::write(path, &item_json)?;
-
-    Ok(serde_json::from_str(&item_json)?)
-}
-
-pub struct ExportCreationContext<'a> {
-    crew_battle_nodes_json_path: &'a Path,
-}
-
-fn get_export(ctx: ExportCreationContext<'_>) -> Result<Exports, BoxDynError> {
-    let file = get("https://origin.warframe.com/PublicExport/index_en.txt.lzma")?
-        .bytes()?
-        .to_vec();
-
-    let mut buffer: Vec<u8> = Vec::new();
-
-    lzma_rs::lzma_decompress(&mut file.as_slice(), &mut buffer).unwrap();
-
-    let data = String::from_utf8(buffer)?;
-
-    let export: manifests::PublicExportIndex = data.parse()?;
-
-    let crew_battle_nodes_json: Vec<ManifestNode> =
-        serde_json::from_str(&fs::read_to_string(ctx.crew_battle_nodes_json_path)?)?;
-
-    let mut export_regions: ExportRegions = get_from_cache_or_fetch(&export.regions)?;
-
-    export_regions.export_regions.extend(crew_battle_nodes_json);
-
-    let exports = Exports {
-        export_regions,
-        export_relic_arcane: get_from_cache_or_fetch(&export.relic_arcane)?,
-        export_customs: get_from_cache_or_fetch(&export.customs)?,
-    };
-
-    Ok(exports)
-}
 #[derive(Debug, Clone, PartialEq)]
 pub struct Context {
     pub exports: Exports,
@@ -93,20 +23,6 @@ pub struct Context {
 }
 
 impl Context {
-    pub fn new() -> Result<Self, BoxDynError> {
-        let exports = get_export(ExportCreationContext {
-            crew_battle_nodes_json_path: Path::new("assets_manual/crewBattleNodes.json"),
-        })?;
-        let custom_maps = CustomMaps::new(&exports);
-        let worldstate_data = WorldstateData::new("data/", "drops/", "assets/", "assets_manual/")?;
-
-        Ok(Context {
-            custom_maps,
-            exports,
-            worldstate_data,
-        })
-    }
-
     pub fn as_ref(&self) -> ContextRef<'_> {
         ContextRef {
             exports: &self.exports,
@@ -179,7 +95,7 @@ pub mod resolve_with {
 
     define_resolvers! {
         LanguageItems;
-        LanguageItemsWithDesc;
+        LanguageItemWithDesc;
         SolNodes;
         LastSegment;
         RotationalReward;
@@ -262,7 +178,7 @@ impl Resolve<ContextRef<'_>> for InternalPath<resolve_with::LanguageItems> {
     }
 }
 
-impl Resolve<ContextRef<'_>> for InternalPath<resolve_with::LanguageItemsWithDesc> {
+impl Resolve<ContextRef<'_>> for InternalPath<resolve_with::LanguageItemWithDesc> {
     type Output = DisplayInfo;
 
     fn resolve(self, ctx: ContextRef) -> Self::Output {
@@ -316,13 +232,10 @@ impl Resolve<()> for InternalPath<resolve_with::PrimePart> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        BoxDynError,
-        core::{Context, InternalPath, Resolve, resolve_with},
-    };
+    use crate::core::InternalPath;
 
     #[test]
-    fn test_from_internal_path() -> Result<(), BoxDynError> {
+    fn test_from_internal_path() -> Result<(), Box<dyn std::error::Error>> {
         let internal_path: InternalPath =
             serde_json::from_str("\"/Lotus/Levels/Proc/Orokin/OrokinTowerMobileDefense\"")?;
 
@@ -330,19 +243,6 @@ mod tests {
             internal_path.to_title_case().unwrap(),
             "Orokin Tower Mobile Defense"
         );
-
-        Ok(())
-    }
-
-    #[test]
-    fn test_language_items() -> Result<(), BoxDynError> {
-        let internal_path: InternalPath<resolve_with::LanguageItems> = serde_json::from_str(
-            "\"/Lotus/StoreItems/Types/Recipes/WarframeRecipes/DagathChassisComponent\"",
-        )?;
-
-        let context = Context::new().unwrap();
-
-        dbg!(internal_path.resolve(context.as_ref()));
 
         Ok(())
     }

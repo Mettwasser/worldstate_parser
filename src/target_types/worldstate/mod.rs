@@ -1,4 +1,5 @@
 pub mod alert;
+pub mod archimedea;
 pub mod archon_hunt;
 pub mod calendar;
 pub mod circuit;

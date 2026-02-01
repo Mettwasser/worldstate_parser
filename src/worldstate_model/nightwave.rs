@@ -63,7 +63,7 @@ pub struct ActiveChallengeUnmapped {
     #[serde(deserialize_with = "deserialize_mongo_date")]
     expiry: DateTime<Utc>,
 
-    challenge: InternalPath<resolve_with::LanguageItemsWithDesc>,
+    challenge: InternalPath<resolve_with::LanguageItemWithDesc>,
 }
 
 impl Resolve<ContextRef<'_>> for ActiveChallengeUnmapped {

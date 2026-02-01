@@ -1,20 +1,28 @@
 # Worldstate Parser
 
-A very WIP worldstate parser for http://api.warframe.com/cdn/worldState.php - in Rust!
+A worldstate parser for http://api.warframe.com/cdn/worldState.php - in Rust!
 
 ## Not a lib?
 
-No, not yet. Why? To make development a bit easier/more comfortable.
+~~No, not yet. Why? To make development a bit easier/more comfortable.~~
 
-## Running
+I just recently transformed it into a lib. If you want to give it a shot, add the git dependency.
+
+## Example
+
+As there's not much documentation right now, you can check [the example](./examples/showcase/), which generates [this file](./showcase/worldstate_parsed.json).
+
+**NOTE:** If you want to run the example yourself, and not fetch the data yourself, run the python script to fetch all the data:
 
 ```sh
-cargo run
+python init.py
 ```
 
-You need a `worldstate.json`, the content of which you can grab [here](http://api.warframe.com/cdn/worldState.php).
+after that simply run:
 
-Additionally run the [nushell script](./init.nu) which will fetch the translation data.
+```
+cargo run --manifest-path examples/showcase/Cargo.toml
+```
 
 ## Translation Data
 

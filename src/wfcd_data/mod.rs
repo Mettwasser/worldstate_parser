@@ -2,15 +2,21 @@ pub mod bounty_rewards;
 pub mod language_item;
 pub mod sortie_data;
 
-use std::{collections::HashMap, fs, io, path::Path};
+use std::{collections::HashMap, fs, io, path::Path, sync::LazyLock};
 
+use regex::Regex;
 use serde::de::DeserializeOwned;
 
-use crate::wfcd_data::{
-    bounty_rewards::{BountyRewards, DropItem},
-    language_item::LanguageItemMap,
-    sortie_data::SortieData,
+use crate::{
+    PathContext,
+    wfcd_data::{
+        bounty_rewards::{BountyRewards, DropItem},
+        language_item::LanguageItemMap,
+        sortie_data::SortieData,
+    },
 };
+
+static SOLNODES_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*) \(.*\)").unwrap());
 
 #[derive(Debug, thiserror::Error)]
 #[error(transparent)]
@@ -40,23 +46,47 @@ pub struct WorldstateData {
 
 impl WorldstateData {
     pub fn new(
-        data_dir: impl AsRef<Path>,
-        drop_dir: impl AsRef<Path>,
-        assets_dir: impl AsRef<Path>,
-        manual_assets_dir: impl AsRef<Path>,
+        PathContext {
+            data_dir,
+            assets_dir,
+            drops_dir,
+        }: PathContext<'_>,
     ) -> Result<Self, WorldstateDataError> {
-        let data_dir = data_dir.as_ref();
-        let drop_dir = drop_dir.as_ref();
-        let assets_dir = assets_dir.as_ref();
-        let manual_assets_dir = manual_assets_dir.as_ref();
+        let mut language_items: LanguageItemMap = init(data_dir, "languages")?;
+        let archimedea_ext: LanguageItemMap = init(assets_dir, "archimedeaExt")?;
+        language_items.extend(archimedea_ext);
+
+        #[derive(serde::Deserialize)]
+        pub struct SolNodeItem {
+            value: String,
+        }
+
+        let sol_nodes: HashMap<String, SolNodeItem> = init(data_dir, "solNodes")?;
+
+        let hubs = sol_nodes
+            .into_iter()
+            .filter_map(|(key, value)| {
+                if !key.contains("HUB") {
+                    return None;
+                }
+
+                let relay_name = SOLNODES_REGEX
+                    .captures(&value.value)
+                    .and_then(|cap| cap.get(1))
+                    .map(|r#match| r#match.as_str().to_owned())
+                    .unwrap_or_else(|| value.value);
+
+                Some((key, relay_name))
+            })
+            .collect();
 
         Ok(Self {
-            language_items: init(data_dir, "languages")?,
+            language_items,
             sortie_data: init(data_dir, "sortieData")?,
-            rewards: init(drop_dir, "data")?,
-            hubs: init(assets_dir, "relays")?,
-            archon_hunt_rewards: init(manual_assets_dir, "archonHuntRewards")?,
-            archon_shards_store_item: init(manual_assets_dir, "archonShardsStoreItem")?,
+            rewards: init(drops_dir, "data")?,
+            hubs,
+            archon_hunt_rewards: init(assets_dir, "archonHuntRewards")?,
+            archon_shards_store_item: init(assets_dir, "archonShardsStoreItem")?,
         })
     }
 }

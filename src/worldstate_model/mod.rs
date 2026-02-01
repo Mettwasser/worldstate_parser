@@ -21,6 +21,7 @@ use crate::{
 };
 
 pub mod alert;
+pub mod archimedea;
 pub mod archon_hunt;
 pub mod calendar;
 pub mod circuit;
@@ -207,6 +208,8 @@ pub enum WorldstateMissionType {
     Interception,
     #[serde(rename = "MT_VOID_CASCADE")]
     VoidCascade,
+    #[serde(rename = "MT_ALCHEMY")]
+    Alchemy,
 }
 
 impl Resolve<()> for WorldstateMissionType {
@@ -241,6 +244,7 @@ impl Resolve<()> for WorldstateMissionType {
             WorldstateMissionType::Unknown => MissionType::Unknown,
             WorldstateMissionType::SanctuaryOnslaught => MissionType::SanctuaryOnslaught,
             WorldstateMissionType::Conclave => MissionType::Conclave,
+            WorldstateMissionType::Alchemy => MissionType::Alchemy,
         }
     }
 }

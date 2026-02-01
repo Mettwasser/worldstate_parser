@@ -48,6 +48,8 @@ pub enum FetchError {
 }
 
 async fn get_from_cache_or_fetch<T: DeserializeOwned>(manifest: &str) -> Result<T, FetchError> {
+    fs::create_dir_all(CACHE_DIR).await?;
+
     let path = Path::new(CACHE_DIR)
         .join(manifest)
         .with_added_extension("json");

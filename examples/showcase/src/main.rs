@@ -1,8 +1,7 @@
 use std::{fs, path::Path};
 
 use worldstate_parser::{
-    PathContext,
-    default_context_provider::DefaultContextProvider,
+    default_context_provider::{DefaultContextProvider, PathContext},
     worldstate,
 };
 

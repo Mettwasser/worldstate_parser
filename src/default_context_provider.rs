@@ -1,5 +1,6 @@
-use std::{io, path::Path, string::FromUtf8Error};
+use std::{collections::HashMap, io, path::Path, string::FromUtf8Error, sync::LazyLock};
 
+use regex::Regex;
 use reqwest::get;
 use serde::de::DeserializeOwned;
 use tokio::fs;
@@ -7,15 +8,86 @@ use tracing::debug;
 
 use crate::{
     ContextProvider,
-    PathContext,
     core::Context,
     custom_maps::CustomMaps,
     manifest_entries::manifest_node::ManifestNode,
     manifests::{self, ExportRegions, Exports, MissingManifestKeyError},
-    wfcd_data::{WorldstateData, WorldstateDataError},
+    wfcd_data::{WorldstateData, language_item::LanguageItemMap},
 };
 
-pub const CACHE_DIR: &str = "./cache";
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct PathContext<'a> {
+    pub data_dir: &'a Path,
+    pub drops_dir: &'a Path,
+    pub assets_dir: &'a Path,
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error(transparent)]
+pub enum WorldstateDataError {
+    Io(#[from] io::Error),
+    Deserialize(#[from] serde_json::Error),
+}
+
+const CACHE_DIR: &str = "./cache";
+
+static SOLNODES_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(.*) \(.*\)").unwrap());
+
+async fn init<T: DeserializeOwned>(
+    data_dir: impl AsRef<Path>,
+    file: impl AsRef<Path>,
+) -> Result<T, WorldstateDataError> {
+    let path = data_dir.as_ref().join(file.as_ref().with_extension("json"));
+
+    Ok(serde_json::from_str(
+        fs::read_to_string(path).await?.as_str(),
+    )?)
+}
+
+async fn create_worldstate_data(
+    PathContext {
+        data_dir,
+        assets_dir,
+        drops_dir,
+    }: PathContext<'_>,
+) -> Result<WorldstateData, WorldstateDataError> {
+    let mut language_items: LanguageItemMap = init(data_dir, "languages").await?;
+    let archimedea_ext: LanguageItemMap = init(assets_dir, "archimedeaExt").await?;
+    language_items.extend(archimedea_ext);
+
+    #[derive(serde::Deserialize)]
+    pub struct SolNodeItem {
+        value: String,
+    }
+
+    let sol_nodes: HashMap<String, SolNodeItem> = init(data_dir, "solNodes").await?;
+
+    let hubs = sol_nodes
+        .into_iter()
+        .filter_map(|(key, value)| {
+            if !key.contains("HUB") {
+                return None;
+            }
+
+            let relay_name = SOLNODES_REGEX
+                .captures(&value.value)
+                .and_then(|cap| cap.get(1))
+                .map(|r#match| r#match.as_str().to_owned())
+                .unwrap_or_else(|| value.value);
+
+            Some((key, relay_name))
+        })
+        .collect();
+
+    Ok(WorldstateData {
+        language_items,
+        sortie_data: init(data_dir, "sortieData").await?,
+        rewards: init(drops_dir, "data").await?,
+        hubs,
+        archon_hunt_rewards: init(assets_dir, "archonHuntRewards").await?,
+        archon_shards_store_item: init(assets_dir, "archonShardsStoreItem").await?,
+    })
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct DefaultContextProvider;
@@ -26,7 +98,7 @@ impl ContextProvider<PathContext<'_>> for DefaultContextProvider {
     async fn get_ctx(&self, data: PathContext<'_>) -> Result<Context, Self::Err> {
         let exports = get_export(&data.assets_dir.join("crewBattleNodes.json")).await?;
         let custom_maps = CustomMaps::new(&exports);
-        let worldstate_data = WorldstateData::new(data)?;
+        let worldstate_data = create_worldstate_data(data).await?;
 
         Ok(Context {
             custom_maps,

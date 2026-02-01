@@ -25,7 +25,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     .await?;
 
     fs::write(
-        "showcase/worldstate_parsed.json",
+        "worldstate_parsed.json",
         serde_json::to_string_pretty(&world_state)?,
     )?;
 

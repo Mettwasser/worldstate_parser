@@ -10,7 +10,7 @@ I just recently transformed it into a lib. If you want to give it a shot, add th
 
 ## Example
 
-As there's not much documentation right now, you can check [the example](./examples/showcase/), which generates [this file](./showcase/worldstate_parsed.json).
+As there's not much documentation right now, you can check [the example](./examples/showcase/), which generates [this file](./worldstate_parsed.json).
 
 **NOTE:** If you want to run the example yourself, and not fetch the data yourself, run the python script to fetch all the data:
 

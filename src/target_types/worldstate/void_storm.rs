@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::target_types::{node::Node, worldstate::fissure::Tier};
+use crate::target_types::{node::Node, worldstate::fissure::FissureTier};
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
@@ -14,5 +14,5 @@ pub struct VoidStorm {
 
     pub expiry: DateTime<Utc>,
 
-    pub tier: Tier,
+    pub tier: FissureTier,
 }

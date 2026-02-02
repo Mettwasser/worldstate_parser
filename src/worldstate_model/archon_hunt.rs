@@ -10,7 +10,7 @@ use crate::{
         resolve_with,
         sol_node::SolNode,
     },
-    target_types::worldstate::archon_hunt::{ArchonHunt, Mission},
+    target_types::worldstate::archon_hunt::{ArchonHunt, ArchonHuntMission},
     worldstate_model::{Id, WorldstateMissionType, deserialize_mongo_date},
 };
 
@@ -60,10 +60,10 @@ pub struct MissionUnmapped {
 }
 
 impl Resolve<ContextRef<'_>> for MissionUnmapped {
-    type Output = Mission;
+    type Output = ArchonHuntMission;
 
     fn resolve(self, ctx: ContextRef<'_>) -> Self::Output {
-        Mission {
+        ArchonHuntMission {
             mission_type: self.mission_type.resolve(()),
             node: self.node.resolve(ctx).cloned(),
         }

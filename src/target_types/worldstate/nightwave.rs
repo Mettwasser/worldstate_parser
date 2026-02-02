@@ -4,18 +4,18 @@ use serde::{Deserialize, Serialize};
 use crate::target_types::display_info::DisplayInfo;
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
-pub enum ChallengeType {
+pub enum NightwaveChallengeType {
     Daily,
     Weekly,
     Elite,
 }
 
-impl ChallengeType {
+impl NightwaveChallengeType {
     pub fn standing_awarded(self) -> u32 {
         match self {
-            ChallengeType::Daily => 1000,
-            ChallengeType::Weekly => 4500,
-            ChallengeType::Elite => 7000,
+            NightwaveChallengeType::Daily => 1000,
+            NightwaveChallengeType::Weekly => 4500,
+            NightwaveChallengeType::Elite => 7000,
         }
     }
 
@@ -44,24 +44,24 @@ pub struct Nightwave {
 
     pub params: String,
 
-    pub active_challenges: Vec<ActiveChallenge>,
+    pub active_challenges: Vec<NightwaveChallenge>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-pub struct ChallengeInfo {
-    pub challenge_type: ChallengeType,
+pub struct NightwaveChallengeInfo {
+    pub challenge_type: NightwaveChallengeType,
 
     pub standing_awarded: u32,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-pub struct ActiveChallenge {
+pub struct NightwaveChallenge {
     pub id: String,
 
     #[serde(flatten)]
-    pub challenge_info: Option<ChallengeInfo>,
+    pub challenge_info: Option<NightwaveChallengeInfo>,
 
     pub activation: DateTime<Utc>,
 

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::target_types::node::Node;
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
-pub enum Tier {
+pub enum FissureTier {
     Lith,
     Meso,
     Neo,
@@ -26,7 +26,7 @@ pub struct Fissure {
 
     pub expiry: DateTime<Utc>,
 
-    pub tier: Tier,
+    pub tier: FissureTier,
 
     pub is_steel_path: bool,
 }

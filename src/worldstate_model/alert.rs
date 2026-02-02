@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     core::{ContextRef, InternalPath, Resolve, resolve_with, sol_node::SolNode},
     target_types::worldstate::{
-        alert::{Alert, Items, MissionInfo, MissionReward},
+        alert::{Alert, AlertItems, AlertMissionInfo, AlertMissionReward},
         counted_item::CountedItem,
     },
     worldstate_model::{
@@ -32,10 +32,10 @@ impl Resolve<ContextRef<'_>> for AlertUnmapped {
 }
 
 impl Resolve<ContextRef<'_>> for MissionInfoUnmapped {
-    type Output = MissionInfo;
+    type Output = AlertMissionInfo;
 
     fn resolve(self, ctx: ContextRef) -> Self::Output {
-        MissionInfo {
+        AlertMissionInfo {
             mission_type: self.mission_type.resolve(()),
             faction: self.faction.resolve(()),
             node: self.location.resolve(ctx).cloned(),
@@ -55,10 +55,10 @@ impl Resolve<ContextRef<'_>> for MissionInfoUnmapped {
 }
 
 impl Resolve<ContextRef<'_>> for MissionRewardUnmapped {
-    type Output = MissionReward;
+    type Output = AlertMissionReward;
 
     fn resolve(self, ctx: ContextRef) -> Self::Output {
-        MissionReward {
+        AlertMissionReward {
             credits: self.credits,
             items: self.items.resolve(ctx),
         }
@@ -84,17 +84,19 @@ pub enum ItemsUnmapped {
 }
 
 impl Resolve<ContextRef<'_>> for ItemsUnmapped {
-    type Output = Items;
+    type Output = AlertItems;
 
     fn resolve(self, ctx: ContextRef) -> Self::Output {
         match self {
-            ItemsUnmapped::CountedItems(counted_item_unmapped) => Items::Counted(
+            ItemsUnmapped::CountedItems(counted_item_unmapped) => AlertItems::Counted(
                 counted_item_unmapped
                     .into_iter()
                     .map(|item| item.resolve(ctx))
                     .collect(),
             ),
-            ItemsUnmapped::Items(internal_paths) => Items::Uncounted(internal_paths.resolve(ctx)),
+            ItemsUnmapped::Items(internal_paths) => {
+                AlertItems::Uncounted(internal_paths.resolve(ctx))
+            },
         }
     }
 }

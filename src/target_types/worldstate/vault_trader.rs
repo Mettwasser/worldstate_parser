@@ -19,19 +19,19 @@ pub struct VaultTrader {
     /// Former Twitch Prime drops available for sale
     pub twitch_prime_shop: Vec<VaultTraderManifest>,
 
-    pub schedule_info: Vec<ScheduleInfo>,
+    pub schedule_info: Vec<VaultTraderScheduleInfo>,
 }
 
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
-pub enum Currency {
+pub enum VaultTraderCurrency {
     Aya,
     #[serde(rename = "Regal Aya")]
     RegalAya,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
-pub struct Price {
-    pub currency: Currency,
+pub struct VaultTraderPrice {
+    pub currency: VaultTraderCurrency,
     pub amount: u64,
 }
 
@@ -40,12 +40,12 @@ pub struct Price {
 pub struct VaultTraderManifest {
     pub item_type: String,
 
-    pub price: Price,
+    pub price: VaultTraderPrice,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-pub struct ScheduleInfo {
+pub struct VaultTraderScheduleInfo {
     pub expiry: DateTime<Utc>,
 
     pub preview_hidden_until: Option<DateTime<Utc>>,

@@ -11,7 +11,7 @@ use crate::target_types::{
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(untagged)]
-pub enum Items {
+pub enum AlertItems {
     Counted(Vec<CountedItem>),
     Uncounted(Vec<String>),
 }
@@ -25,7 +25,7 @@ pub struct Alert {
 
     pub expiry: DateTime<Utc>,
 
-    pub mission_info: MissionInfo,
+    pub mission_info: AlertMissionInfo,
 
     pub tag: String,
 
@@ -35,7 +35,7 @@ pub struct Alert {
 #[skip_serializing_none]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-pub struct MissionInfo {
+pub struct AlertMissionInfo {
     pub mission_type: MissionType,
 
     pub faction: Faction,
@@ -56,7 +56,7 @@ pub struct MissionInfo {
 
     pub seed: Option<i64>,
 
-    pub mission_reward: MissionReward,
+    pub mission_reward: AlertMissionReward,
 
     pub desc_text: String,
 
@@ -67,8 +67,8 @@ pub struct MissionInfo {
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-pub struct MissionReward {
+pub struct AlertMissionReward {
     pub credits: Option<i64>,
 
-    pub items: Items,
+    pub items: AlertItems,
 }

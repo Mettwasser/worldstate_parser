@@ -3,7 +3,11 @@ use serde::{Deserialize, Deserializer};
 
 use crate::{
     core::{ContextRef, InternalPath, Resolve, resolve_with, sol_node::SolNode},
-    target_types::worldstate::syndicate_mission::{Job, MissionDetails, SyndicateMission},
+    target_types::worldstate::syndicate_mission::{
+        SyndicateJob,
+        SyndicateMission,
+        SyndicateMissionDetails,
+    },
     worldstate_model::{
         Id,
         RotationalRewardContext,
@@ -85,14 +89,14 @@ impl<'de> Deserialize<'de> for MissionDetailsUnmapped {
 }
 
 impl Resolve<(ContextRef<'_>, WorldstateSyndicateType)> for MissionDetailsUnmapped {
-    type Output = MissionDetails;
+    type Output = SyndicateMissionDetails;
 
     fn resolve(
         self,
         (ctx, syndicate_type): (ContextRef<'_>, WorldstateSyndicateType),
     ) -> Self::Output {
         match self {
-            MissionDetailsUnmapped::Bounties { jobs } => MissionDetails::Bounties(
+            MissionDetailsUnmapped::Bounties { jobs } => SyndicateMissionDetails::Bounties(
                 jobs.into_iter()
                     .map(|job| {
                         let ctx = RotationalRewardContext {
@@ -108,14 +112,14 @@ impl Resolve<(ContextRef<'_>, WorldstateSyndicateType)> for MissionDetailsUnmapp
                     })
                     .collect(),
             ),
-            MissionDetailsUnmapped::Nodes { nodes } => MissionDetails::Nodes(
+            MissionDetailsUnmapped::Nodes { nodes } => SyndicateMissionDetails::Nodes(
                 nodes
                     .resolve(ctx)
                     .iter()
                     .map(|node| node.cloned())
                     .collect(),
             ),
-            MissionDetailsUnmapped::Empty => MissionDetails::Empty,
+            MissionDetailsUnmapped::Empty => SyndicateMissionDetails::Empty,
         }
     }
 }
@@ -145,10 +149,10 @@ pub struct JobUnmapped {
 }
 
 impl Resolve<RotationalRewardContext<'_>> for JobUnmapped {
-    type Output = Job;
+    type Output = SyndicateJob;
 
     fn resolve(self, ctx: RotationalRewardContext<'_>) -> Self::Output {
-        Job {
+        SyndicateJob {
             job_type: self.job_type.resolve(ctx.inner_ctx),
             rewards: self.rewards.resolve(ctx).unwrap_or_default(),
             mastery_req: self.mastery_req,

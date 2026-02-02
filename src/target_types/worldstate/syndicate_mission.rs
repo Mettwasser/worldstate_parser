@@ -6,21 +6,24 @@ use crate::{
     wfcd_data::bounty_rewards::DropItem,
 };
 
-fn deserialize_null_as_empty<'de, D>(deserializer: D) -> Result<MissionDetails, D::Error>
+fn deserialize_null_as_empty<'de, D>(deserializer: D) -> Result<SyndicateMissionDetails, D::Error>
 where
     D: Deserializer<'de>,
 {
     let opt = Option::deserialize(deserializer)?;
-    Ok(opt.unwrap_or(MissionDetails::Empty))
+    Ok(opt.unwrap_or(SyndicateMissionDetails::Empty))
 }
 
-fn serialize_empty_as_null<S>(details: &MissionDetails, serializer: S) -> Result<S::Ok, S::Error>
+fn serialize_empty_as_null<S>(
+    details: &SyndicateMissionDetails,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
     match details {
-        MissionDetails::Empty => serializer.serialize_none(), // Writes `null`
-        _ => details.serialize(serializer),                   // Writes normal JSON object
+        SyndicateMissionDetails::Empty => serializer.serialize_none(), // Writes `null`
+        _ => details.serialize(serializer),                            // Writes normal JSON object
     }
 }
 
@@ -41,20 +44,20 @@ pub struct SyndicateMission {
         deserialize_with = "deserialize_null_as_empty",
         serialize_with = "serialize_empty_as_null"
     )]
-    pub details: MissionDetails,
+    pub details: SyndicateMissionDetails,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase", tag = "type", content = "data")]
-pub enum MissionDetails {
-    Bounties(Vec<Job>),
+pub enum SyndicateMissionDetails {
+    Bounties(Vec<SyndicateJob>),
     Nodes(Vec<Option<Node>>),
     Empty,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
-pub struct Job {
+pub struct SyndicateJob {
     pub job_type: Option<String>,
 
     pub rewards: Vec<DropItem>,

@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 use crate::{
     core::{ContextRef, InternalPath, Resolve, resolve_with},
     target_types::worldstate::nightwave::{
-        ActiveChallenge,
-        ChallengeInfo,
-        ChallengeType,
         Nightwave,
+        NightwaveChallenge,
+        NightwaveChallengeInfo,
+        NightwaveChallengeType,
     },
     worldstate_model::{Id, deserialize_mongo_date},
 };
@@ -67,16 +67,18 @@ pub struct ActiveChallengeUnmapped {
 }
 
 impl Resolve<ContextRef<'_>> for ActiveChallengeUnmapped {
-    type Output = ActiveChallenge;
+    type Output = NightwaveChallenge;
 
     fn resolve(self, ctx: ContextRef<'_>) -> Self::Output {
         let challenge_info =
-            ChallengeType::from_path(&self.challenge.path).map(|r#type| ChallengeInfo {
-                standing_awarded: r#type.standing_awarded(),
-                challenge_type: r#type,
+            NightwaveChallengeType::from_path(&self.challenge.path).map(|r#type| {
+                NightwaveChallengeInfo {
+                    standing_awarded: r#type.standing_awarded(),
+                    challenge_type: r#type,
+                }
             });
 
-        ActiveChallenge {
+        NightwaveChallenge {
             id: self.id.oid,
             challenge_info,
             activation: self.activation,

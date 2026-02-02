@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 use crate::{
     core::Resolve,
-    manifest_entries::manifest_relic_arcane::RelicArcane,
+    manifest_entries::{customs_entry::CustomsEntry, manifest_relic_arcane::RelicArcane},
     manifests::Exports,
-    target_types::{customs_entry::CustomsEntry, node::Node, relic::Relic},
+    target_types::{node::Node, relic::Relic},
 };
 
 pub type SolNodeToRegionMap = HashMap<String, Node>;

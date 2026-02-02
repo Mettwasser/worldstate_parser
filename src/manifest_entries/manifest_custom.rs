@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{core::Resolve, target_types::customs_entry::CustomsEntry};
+use crate::{core::Resolve, manifest_entries::customs_entry::CustomsEntry};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 #[serde(rename_all = "camelCase")]

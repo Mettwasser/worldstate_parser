@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     core::{ContextRef, Resolve, sol_node::SolNode},
-    target_types::worldstate::fissure::{Fissure, Tier},
+    target_types::worldstate::fissure::{Fissure, FissureTier},
     worldstate_model::{Id, deserialize_mongo_date},
 };
 
@@ -24,16 +24,16 @@ pub enum TierUnmapped {
 }
 
 impl Resolve<()> for TierUnmapped {
-    type Output = Tier;
+    type Output = FissureTier;
 
     fn resolve(self, _: ()) -> Self::Output {
         match self {
-            TierUnmapped::Lith => Tier::Lith,
-            TierUnmapped::Meso => Tier::Meso,
-            TierUnmapped::Neo => Tier::Neo,
-            TierUnmapped::Axi => Tier::Axi,
-            TierUnmapped::Requiem => Tier::Requiem,
-            TierUnmapped::Omnia => Tier::Omnia,
+            TierUnmapped::Lith => FissureTier::Lith,
+            TierUnmapped::Meso => FissureTier::Meso,
+            TierUnmapped::Neo => FissureTier::Neo,
+            TierUnmapped::Axi => FissureTier::Axi,
+            TierUnmapped::Requiem => FissureTier::Requiem,
+            TierUnmapped::Omnia => FissureTier::Omnia,
         }
     }
 }

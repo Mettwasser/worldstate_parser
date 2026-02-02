@@ -93,7 +93,7 @@ async fn create_worldstate_data(
 pub struct DefaultContextProvider<'a>(pub PathContext<'a>);
 
 impl ContextProvider for DefaultContextProvider<'_> {
-    type Err = FetchError;
+    type Err = DefaultContextProviderError;
 
     async fn get_ctx(&self) -> Result<Context, Self::Err> {
         let exports = get_export(&self.0.assets_dir.join("crewBattleNodes.json")).await?;
@@ -110,7 +110,7 @@ impl ContextProvider for DefaultContextProvider<'_> {
 
 #[derive(Debug, thiserror::Error)]
 #[error(transparent)]
-pub enum FetchError {
+pub enum DefaultContextProviderError {
     Io(#[from] io::Error),
     Json(#[from] serde_json::Error),
     Reqwest(#[from] reqwest::Error),
@@ -119,7 +119,9 @@ pub enum FetchError {
     DataError(#[from] WorldstateDataError),
 }
 
-async fn get_from_cache_or_fetch<T: DeserializeOwned>(manifest: &str) -> Result<T, FetchError> {
+async fn get_from_cache_or_fetch<T: DeserializeOwned>(
+    manifest: &str,
+) -> Result<T, DefaultContextProviderError> {
     fs::create_dir_all(CACHE_DIR).await?;
 
     let path = Path::new(CACHE_DIR)
@@ -158,7 +160,7 @@ async fn get_from_cache_or_fetch<T: DeserializeOwned>(manifest: &str) -> Result<
     Ok(serde_json::from_str(&item_json)?)
 }
 
-async fn get_export(ctx: &Path) -> Result<Exports, FetchError> {
+async fn get_export(ctx: &Path) -> Result<Exports, DefaultContextProviderError> {
     let file = get("https://origin.warframe.com/PublicExport/index_en.txt.lzma")
         .await?
         .bytes()

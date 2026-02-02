@@ -1,3 +1,4 @@
+pub mod customs_entry;
 pub mod manifest_custom;
 pub mod manifest_faction;
 pub mod manifest_mission_type;

@@ -4,11 +4,11 @@ use serde::{Deserialize, Serialize};
 use crate::{
     core::{ContextRef, InternalPath, Resolve, resolvable_string::ResolvableString, resolve_with},
     target_types::worldstate::vault_trader::{
-        Currency,
-        Price,
-        ScheduleInfo,
         VaultTrader,
+        VaultTraderCurrency,
         VaultTraderManifest,
+        VaultTraderPrice,
+        VaultTraderScheduleInfo,
     },
     worldstate_model::{Id, deserialize_mongo_date, deserialize_mongo_date_opt},
 };
@@ -64,16 +64,16 @@ pub enum PriceUnmapped {
 }
 
 impl Resolve<()> for PriceUnmapped {
-    type Output = Price;
+    type Output = VaultTraderPrice;
 
     fn resolve(self, _ctx: ()) -> Self::Output {
         match self {
-            PriceUnmapped::RegalAya(amount) => Price {
-                currency: Currency::RegalAya,
+            PriceUnmapped::RegalAya(amount) => VaultTraderPrice {
+                currency: VaultTraderCurrency::RegalAya,
                 amount,
             },
-            PriceUnmapped::Aya(amount) => Price {
-                currency: Currency::Aya,
+            PriceUnmapped::Aya(amount) => VaultTraderPrice {
+                currency: VaultTraderCurrency::Aya,
                 amount,
             },
         }
@@ -113,10 +113,10 @@ pub struct ScheduleInfoUnmapped {
 }
 
 impl Resolve<ContextRef<'_>> for ScheduleInfoUnmapped {
-    type Output = ScheduleInfo;
+    type Output = VaultTraderScheduleInfo;
 
     fn resolve(self, ctx: ContextRef<'_>) -> Self::Output {
-        ScheduleInfo {
+        VaultTraderScheduleInfo {
             expiry: self.expiry,
             preview_hidden_until: self.preview_hidden_until,
             featured_item: self.featured_item.resolve(ctx),

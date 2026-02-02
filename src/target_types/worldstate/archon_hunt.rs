@@ -21,12 +21,12 @@ pub struct ArchonHunt {
 
     pub boss: Option<String>,
 
-    pub missions: Vec<Mission>,
+    pub missions: Vec<ArchonHuntMission>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
-pub struct Mission {
+pub struct ArchonHuntMission {
     pub mission_type: MissionType,
 
     pub node: Option<Node>,

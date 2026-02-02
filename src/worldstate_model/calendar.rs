@@ -51,8 +51,8 @@ pub enum CalendarSeasonUnmapped {
     #[serde(rename = "CST_SPRING")]
     Spring,
 
-    #[serde(rename = "CST_AUTUMN")]
-    Autumn,
+    #[serde(rename = "CST_FALL")]
+    Fall,
 }
 
 impl Resolve<()> for CalendarSeasonUnmapped {
@@ -63,7 +63,7 @@ impl Resolve<()> for CalendarSeasonUnmapped {
             CalendarSeasonUnmapped::Summer => CalendarSeason::Summer,
             CalendarSeasonUnmapped::Winter => CalendarSeason::Winter,
             CalendarSeasonUnmapped::Spring => CalendarSeason::Spring,
-            CalendarSeasonUnmapped::Autumn => CalendarSeason::Autumn,
+            CalendarSeasonUnmapped::Fall => CalendarSeason::Fall,
         }
     }
 }

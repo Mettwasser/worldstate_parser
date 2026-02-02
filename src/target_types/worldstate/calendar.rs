@@ -47,5 +47,5 @@ pub enum CalendarSeason {
 
     Spring,
 
-    Autumn,
+    Fall,
 }

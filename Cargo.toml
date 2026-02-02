@@ -28,5 +28,6 @@ tokio = { optional = true, version = "1.49.0", features = [
 ] }
 
 [features]
-default = ["default_provider"]
+default = ["default_provider", "default_fetcher"]
 default_provider = ["tokio", "reqwest"]
+default_fetcher = ["tokio", "reqwest"]

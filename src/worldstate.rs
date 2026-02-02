@@ -51,19 +51,15 @@ pub enum WorldstateError {
     Provider(Box<dyn std::error::Error + Send + Sync>),
 }
 
-pub async fn from_str<C, Data>(
-    s: &str,
-    provider: C,
-    data: Data,
-) -> Result<WorldState, WorldstateError>
+pub async fn from_str<C>(s: &str, provider: C) -> Result<WorldState, WorldstateError>
 where
-    C: ContextProvider<Data>,
+    C: ContextProvider,
     C::Err: Into<Box<dyn std::error::Error + Send + Sync>>,
 {
     let ws_unmapped = serde_json::from_str::<WorldStateUnmapped>(s)?;
 
     let ctx = provider
-        .get_ctx(data)
+        .get_ctx()
         .await
         .map_err(|err| WorldstateError::Provider(err.into()))?;
 

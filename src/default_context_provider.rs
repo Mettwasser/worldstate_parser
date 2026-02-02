@@ -90,15 +90,15 @@ async fn create_worldstate_data(
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct DefaultContextProvider;
+pub struct DefaultContextProvider<'a>(pub PathContext<'a>);
 
-impl ContextProvider<PathContext<'_>> for DefaultContextProvider {
+impl ContextProvider for DefaultContextProvider<'_> {
     type Err = FetchError;
 
-    async fn get_ctx(&self, data: PathContext<'_>) -> Result<Context, Self::Err> {
-        let exports = get_export(&data.assets_dir.join("crewBattleNodes.json")).await?;
+    async fn get_ctx(&self) -> Result<Context, Self::Err> {
+        let exports = get_export(&self.0.assets_dir.join("crewBattleNodes.json")).await?;
         let custom_maps = CustomMaps::new(&exports);
-        let worldstate_data = create_worldstate_data(data).await?;
+        let worldstate_data = create_worldstate_data(self.0).await?;
 
         Ok(Context {
             custom_maps,

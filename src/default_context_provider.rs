@@ -52,7 +52,7 @@ async fn create_worldstate_data(
     }: PathContext<'_>,
 ) -> Result<WorldstateData, WorldstateDataError> {
     let mut language_items: LanguageItemMap = init(data_dir, "languages").await?;
-    let archimedea_ext: LanguageItemMap = init(assets_dir, "archimedeaExt").await?;
+    let archimedea_ext: LanguageItemMap = init(assets_dir, "languageItemsExt").await?;
     language_items.extend(archimedea_ext);
 
     #[derive(serde::Deserialize)]

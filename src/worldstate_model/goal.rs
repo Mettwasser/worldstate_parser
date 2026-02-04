@@ -22,23 +22,24 @@ pub struct GoalUnmapped {
     #[serde(deserialize_with = "deserialize_mongo_date_opt", default)]
     grace_period: Option<DateTime<Utc>>,
 
-    count: u64,
+    count: Option<u64>,
 
-    goal: u64,
+    goal: Option<u64>,
 
     success: Option<u64>,
 
+    #[serde(default)]
     personal: bool,
 
     desc: InternalPath<resolve_with::LanguageItems>,
 
-    tool_tip: InternalPath<resolve_with::LanguageItems>,
+    tool_tip: Option<InternalPath<resolve_with::LanguageItems>>,
 
     icon: Option<String>,
 
     tag: String,
 
-    node: SolNode,
+    node: Option<SolNode>,
 }
 
 impl Resolve<ContextRef<'_>> for GoalUnmapped {
@@ -58,7 +59,7 @@ impl Resolve<ContextRef<'_>> for GoalUnmapped {
             tool_tip: self.tool_tip.resolve(ctx),
             icon: self.icon,
             tag: self.tag,
-            node: self.node.resolve(ctx).cloned(),
+            node: self.node.resolve(ctx).flatten().cloned(),
         }
     }
 }

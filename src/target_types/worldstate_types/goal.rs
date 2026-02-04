@@ -14,9 +14,9 @@ pub struct Goal {
 
     pub grace_period: Option<DateTime<Utc>>,
 
-    pub count: u64,
+    pub count: Option<u64>,
 
-    pub goal: u64,
+    pub goal: Option<u64>,
 
     pub success: Option<u64>,
 
@@ -24,7 +24,7 @@ pub struct Goal {
 
     pub desc: String,
 
-    pub tool_tip: String,
+    pub tool_tip: Option<String>,
 
     pub icon: Option<String>,
 

@@ -26,6 +26,7 @@ pub use crate::{
             calendar::*,
             circuit::*,
             counted_item::*,
+            cycles,
             daily_deal::*,
             event::*,
             fissure::*,

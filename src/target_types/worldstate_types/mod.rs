@@ -4,6 +4,7 @@ pub mod archon_hunt;
 pub mod calendar;
 pub mod circuit;
 pub mod counted_item;
+pub mod cycles;
 pub mod daily_deal;
 pub mod event;
 pub mod fissure;

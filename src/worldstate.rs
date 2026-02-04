@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     ContextProvider,
     core::{ContextRef, Resolve},
+    cycles::duviri::DuviriCycle,
     target_types::worldstate_types::{
         alert::Alert,
         archimedea::ArchimedeaRoot,
@@ -40,6 +41,11 @@ use crate::{
         vault_trader::VaultTraderUnmapped,
         void_storms::VoidStormUnmapped,
         void_trader::VoidTraderStateUnmapped,
+    },
+    worldstate_types::cycles::{
+        cambion_drift::CambionDriftCycle,
+        cetus::CetusCycle,
+        orb_vallis::OrbVallisCycle,
     },
 };
 
@@ -125,6 +131,10 @@ impl WorldStateUnmapped {
             nightwave,
             calendar,
             archimedea,
+            cetus_cycle: CetusCycle::now(),
+            cambion_drift_cycle: CambionDriftCycle::now(),
+            orb_vallis_cycle: OrbVallisCycle::now(),
+            duviri_cycle: DuviriCycle::now(),
         }
     }
 }
@@ -140,6 +150,14 @@ pub enum WorldstateError {
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct WorldState {
+    pub cetus_cycle: CetusCycle,
+
+    pub cambion_drift_cycle: CambionDriftCycle,
+
+    pub orb_vallis_cycle: OrbVallisCycle,
+
+    pub duviri_cycle: DuviriCycle,
+
     pub events: Vec<Event>,
 
     pub fissures: Vec<Fissure>,

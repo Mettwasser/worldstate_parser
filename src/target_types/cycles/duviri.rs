@@ -2,11 +2,10 @@ use chrono::{DateTime, Duration, NaiveDate, Utc};
 use derive_more::Display;
 use serde::{Deserialize, Serialize};
 
-use crate::worldstate_types::cycles::Cycle;
+use crate::target_types::cycles::Cycle;
 
 /// AKA "Mood"
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Hash, Display)]
-#[serde(rename_all = "camelCase")]
 pub enum DuviriState {
     Joy,
     Anger,

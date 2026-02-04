@@ -1,3 +1,4 @@
+pub mod cycles;
 pub mod display_info;
 pub mod faction;
 pub mod language;

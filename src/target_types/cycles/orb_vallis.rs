@@ -2,7 +2,7 @@ use chrono::{DateTime, Duration, NaiveDate, Timelike, Utc};
 use derive_more::Display;
 use serde::{Deserialize, Serialize};
 
-use crate::worldstate_types::cycles::{Cycle, Phase, calculate_cycle};
+use crate::target_types::cycles::{Cycle, Phase, calculate_cycle};
 
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Hash, Display)]
 pub enum OrbVallisState {

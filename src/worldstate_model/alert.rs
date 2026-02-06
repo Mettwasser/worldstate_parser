@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     core::{ContextRef, InternalPath, Resolve, resolve_with, sol_node::SolNode},
     target_types::worldstate_types::{
-        alert::{Alert, AlertItems, AlertMissionInfo, AlertMissionReward},
+        alert::{Alert, AlertMissionInfo, AlertMissionReward},
         counted_item::CountedItem,
     },
     worldstate_model::{
@@ -61,6 +61,7 @@ impl Resolve<ContextRef<'_>> for MissionRewardUnmapped {
         AlertMissionReward {
             credits: self.credits,
             items: self.items.resolve(ctx),
+            counted_items: self.counted_items.resolve(ctx),
         }
     }
 }
@@ -72,31 +73,6 @@ impl Resolve<ContextRef<'_>> for CountedItemUnmapped {
         CountedItem {
             item_count: self.item_count,
             item_type: self.item_type.resolve(ctx),
-        }
-    }
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum ItemsUnmapped {
-    CountedItems(Vec<CountedItemUnmapped>),
-    Items(Vec<InternalPath<resolve_with::LanguageItems>>),
-}
-
-impl Resolve<ContextRef<'_>> for ItemsUnmapped {
-    type Output = AlertItems;
-
-    fn resolve(self, ctx: ContextRef) -> Self::Output {
-        match self {
-            ItemsUnmapped::CountedItems(counted_item_unmapped) => AlertItems::Counted(
-                counted_item_unmapped
-                    .into_iter()
-                    .map(|item| item.resolve(ctx))
-                    .collect(),
-            ),
-            ItemsUnmapped::Items(internal_paths) => {
-                AlertItems::Uncounted(internal_paths.resolve(ctx))
-            },
         }
     }
 }
@@ -158,6 +134,9 @@ pub struct MissionInfoUnmapped {
 pub struct MissionRewardUnmapped {
     credits: Option<i64>,
 
-    #[serde(alias = "countedItems")]
-    items: ItemsUnmapped,
+    #[serde(default)]
+    pub items: Vec<InternalPath<resolve_with::LanguageItems>>,
+
+    #[serde(default)]
+    pub counted_items: Vec<CountedItemUnmapped>,
 }

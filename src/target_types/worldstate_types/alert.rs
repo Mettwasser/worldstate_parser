@@ -10,13 +10,6 @@ use crate::target_types::{
 };
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
-#[serde(untagged)]
-pub enum AlertItems {
-    Counted(Vec<CountedItem>),
-    Uncounted(Vec<String>),
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Alert {
     pub id: String,
@@ -70,5 +63,7 @@ pub struct AlertMissionInfo {
 pub struct AlertMissionReward {
     pub credits: Option<i64>,
 
-    pub items: AlertItems,
+    pub items: Vec<String>,
+
+    pub counted_items: Vec<CountedItem>,
 }

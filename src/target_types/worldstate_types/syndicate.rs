@@ -1,98 +1,130 @@
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use std::str::FromStr;
 
-fn serialize_nightwave<S>(season: &u8, serializer: S) -> Result<S::Ok, S::Error>
-where
-    S: Serializer,
-{
-    serializer.serialize_str(&format!("Nightwave Season {season}"))
+use derive_more::Display;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Display, Serialize, Deserialize)]
+#[serde(into = "String", try_from = "String")]
+pub enum SyndicateType {
+    #[display("Arbiters")]
+    Arbiters,
+
+    #[display("Necraloid")]
+    Necraloid,
+
+    #[display("Event")]
+    Event,
+
+    #[display("Cephalon Suda")]
+    CephalonSuda,
+
+    #[display("Kahl")]
+    Kahl,
+
+    #[display("NewLoka")]
+    NewLoka,
+
+    #[display("Nightcap Journal")]
+    NightcapJournal,
+
+    #[display("Quills")]
+    Quills,
+
+    #[display("Radio Legion")]
+    RadioLegion,
+
+    #[display("Radio Legion 2")]
+    RadioLegion2,
+
+    #[display("Radio Legion 3")]
+    RadioLegion3,
+
+    #[display("Perrin")]
+    Perrin,
+
+    #[display("Vox")]
+    Vox,
+
+    #[display("Red Veil")]
+    RedVeil,
+
+    #[display("Vent Kids")]
+    VentKids,
+
+    #[display("Steel Meridian")]
+    SteelMeridian,
+
+    #[display("Cavia")]
+    Cavia,
+
+    #[display("Hex")]
+    Hex,
+
+    #[display("Entrati")]
+    Entrati,
+
+    #[display("Ostrons")]
+    Ostrons,
+
+    #[display("Solaris United")]
+    SolarisUnited,
+
+    #[display("Zariman")]
+    Zariman,
+
+    #[display("Nightwave Season {_0}")]
+    Nightwave(u8),
 }
 
-fn deserialize_nightwave<'de, D>(deserializer: D) -> Result<u8, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = String::deserialize(deserializer)?;
-    if let Some(season_str) = s.strip_prefix("Nightwave Season ") {
-        season_str.parse::<u8>().map_err(serde::de::Error::custom)
-    } else {
-        Err(serde::de::Error::custom(
-            "expected 'Nightwave Season {season}'",
-        ))
+impl From<SyndicateType> for String {
+    fn from(syndicate: SyndicateType) -> Self {
+        syndicate.to_string()
     }
 }
 
-#[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
-#[serde(untagged)]
-pub enum SyndicateType {
-    #[serde(rename(serialize = "Arbiters"))]
-    Arbiters,
+impl TryFrom<String> for SyndicateType {
+    type Error = String;
 
-    #[serde(rename(serialize = "Necraloid"))]
-    Necraloid,
+    fn try_from(s: String) -> Result<Self, Self::Error> {
+        s.parse()
+    }
+}
 
-    #[serde(rename(serialize = "Event"))]
-    Event,
+impl FromStr for SyndicateType {
+    type Err = String;
 
-    #[serde(rename(serialize = "Cephalon Suda"))]
-    CephalonSuda,
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if let Some(season_str) = s.strip_prefix("Nightwave Season ") {
+            return season_str
+                .parse::<u8>()
+                .map(SyndicateType::Nightwave)
+                .map_err(|_| "Invalid Nightwave season number".to_string());
+        }
 
-    #[serde(rename(serialize = "Kahl"))]
-    Kahl,
-
-    #[serde(rename(serialize = "NewLoka"))]
-    NewLoka,
-
-    #[serde(rename(serialize = "Nightcap Journal"))]
-    NightcapJournal,
-
-    #[serde(rename(serialize = "Quills"))]
-    Quills,
-
-    #[serde(rename(serialize = "Radio Legion"))]
-    RadioLegion,
-
-    #[serde(rename(serialize = "Radio Legion 2"))]
-    RadioLegion2,
-
-    #[serde(rename(serialize = "Radio Legion 3"))]
-    RadioLegion3,
-
-    #[serde(rename(serialize = "Perrin"))]
-    Perrin,
-
-    #[serde(rename(serialize = "Vox"))]
-    Vox,
-
-    #[serde(rename(serialize = "Red Veil"))]
-    RedVeil,
-
-    #[serde(rename(serialize = "Vent Kids"))]
-    VentKids,
-
-    #[serde(rename(serialize = "Steel Meridian"))]
-    SteelMeridian,
-
-    #[serde(rename(serialize = "Cavia"))]
-    Cavia,
-
-    #[serde(rename(serialize = "Hex"))]
-    Hex,
-
-    #[serde(rename(serialize = "Entrati"))]
-    Entrati,
-
-    #[serde(rename(serialize = "Ostrons"))]
-    Ostrons,
-
-    #[serde(rename(serialize = "Solaris United"))]
-    SolarisUnited,
-
-    #[serde(rename(serialize = "Zariman"))]
-    Zariman,
-
-    #[serde(
-        serialize_with = "serialize_nightwave",
-        deserialize_with = "deserialize_nightwave"
-    )]
-    Nightwave(u8),
+        match s {
+            "Arbiters" => Ok(SyndicateType::Arbiters),
+            "Necraloid" => Ok(SyndicateType::Necraloid),
+            "Event" => Ok(SyndicateType::Event),
+            "Cephalon Suda" => Ok(SyndicateType::CephalonSuda),
+            "Kahl" => Ok(SyndicateType::Kahl),
+            "NewLoka" => Ok(SyndicateType::NewLoka),
+            "Nightcap Journal" => Ok(SyndicateType::NightcapJournal),
+            "Quills" => Ok(SyndicateType::Quills),
+            "Radio Legion" => Ok(SyndicateType::RadioLegion),
+            "Radio Legion 2" => Ok(SyndicateType::RadioLegion2),
+            "Radio Legion 3" => Ok(SyndicateType::RadioLegion3),
+            "Perrin" => Ok(SyndicateType::Perrin),
+            "Vox" => Ok(SyndicateType::Vox),
+            "Red Veil" => Ok(SyndicateType::RedVeil),
+            "Vent Kids" => Ok(SyndicateType::VentKids),
+            "Steel Meridian" => Ok(SyndicateType::SteelMeridian),
+            "Cavia" => Ok(SyndicateType::Cavia),
+            "Hex" => Ok(SyndicateType::Hex),
+            "Entrati" => Ok(SyndicateType::Entrati),
+            "Ostrons" => Ok(SyndicateType::Ostrons),
+            "Solaris United" => Ok(SyndicateType::SolarisUnited),
+            "Zariman" => Ok(SyndicateType::Zariman),
+            _ => Err(format!("Unknown syndicate type: {}", s)),
+        }
+    }
 }

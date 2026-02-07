@@ -31,10 +31,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let world_state = WorldState::from_str(&world_state_str, provider).await?;
 
-    fs::write(
-        "worldstate_parsed.json",
-        serde_json::to_string_pretty(&world_state)?,
-    )?;
+    let world_state_parsed = serde_json::to_string_pretty(&world_state)?;
+
+    fs::write("worldstate_parsed.json", &world_state_parsed)?;
+
+    let _world_state: WorldState = serde_json::from_str(&world_state_parsed)?;
 
     Ok(())
 }

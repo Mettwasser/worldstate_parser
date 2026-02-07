@@ -1,15 +1,13 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::{target_types::display_info::DisplayInfo, worldstate_model::deserialize_mongo_date};
+use crate::target_types::display_info::DisplayInfo;
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Calendar {
-    #[serde(deserialize_with = "deserialize_mongo_date")]
     pub activation: DateTime<Utc>,
 
-    #[serde(deserialize_with = "deserialize_mongo_date")]
     pub expiry: DateTime<Utc>,
 
     pub days: Vec<CalendarDay>,

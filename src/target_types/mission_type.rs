@@ -18,19 +18,19 @@ pub enum MissionType {
 
     Defense,
 
-    #[serde(rename(serialize = "Mobile Defense"))]
+    #[serde(rename = "Mobile Defense")]
     MobileDefense,
 
     Interception,
 
     Hijack,
 
-    #[serde(rename(serialize = "Hive Sabotage"))]
+    #[serde(rename = "Hive Sabotage")]
     HiveSabotage,
 
     Excavation,
 
-    #[serde(rename(serialize = "Infested Salvage"))]
+    #[serde(rename = "Infested Salvage")]
     InfestedSalvage,
 
     Rathuum,
@@ -50,25 +50,25 @@ pub enum MissionType {
 
     Disruption,
 
-    #[serde(rename(serialize = "Void Flood"))]
+    #[serde(rename = "Void Flood")]
     VoidFlood,
 
-    #[serde(rename(serialize = "Void Cascade"))]
+    #[serde(rename = "Void Cascade")]
     VoidCascade,
 
-    #[serde(rename(serialize = "Void Armaggedon"))]
+    #[serde(rename = "Void Armaggedon")]
     VoidArmaggedon,
 
     /// I don't really what this is
-    #[serde(rename(serialize = "Void Armaggedon 2"))]
+    #[serde(rename = "Void Armaggedon 2")]
     VoidArmageddon2,
 
     Alchemy,
 
-    #[serde(rename(serialize = "Legacyte Harvest"))]
+    #[serde(rename = "Legacyte Harvest")]
     LegacyteHarvest,
 
-    #[serde(rename(serialize = "Shrine Defense"))]
+    #[serde(rename = "Shrine Defense")]
     ShrineDefense,
 
     Faceoff,
@@ -78,17 +78,17 @@ pub enum MissionType {
     /// The Missions from the Perita Rebellion
     Recall,
 
-    #[serde(rename(serialize = "Sanctuary Onslaught"))]
+    #[serde(rename = "Sanctuary Onslaught")]
     SanctuaryOnslaught,
 
-    #[serde(rename(serialize = "Elite Sanctuary Onslaught"))]
+    #[serde(rename = "Elite Sanctuary Onslaught")]
     EliteSanctuaryOnslaught,
 
     Conclave,
 
     Skirmish,
 
-    #[serde(rename(serialize = "Free Flight"))]
+    #[serde(rename = "Free Flight")]
     FreeFlight,
 
     Orphix,

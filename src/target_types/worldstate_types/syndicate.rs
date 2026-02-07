@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 fn serialize_nightwave<S>(season: &u8, serializer: S) -> Result<S::Ok, S::Error>
 where
@@ -7,7 +7,22 @@ where
     serializer.serialize_str(&format!("Nightwave Season {season}"))
 }
 
+fn deserialize_nightwave<'de, D>(deserializer: D) -> Result<u8, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    if let Some(season_str) = s.strip_prefix("Nightwave Season ") {
+        season_str.parse::<u8>().map_err(serde::de::Error::custom)
+    } else {
+        Err(serde::de::Error::custom(
+            "expected 'Nightwave Season {season}'",
+        ))
+    }
+}
+
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
+#[serde(untagged)]
 pub enum SyndicateType {
     #[serde(rename(serialize = "Arbiters"))]
     Arbiters,
@@ -75,6 +90,9 @@ pub enum SyndicateType {
     #[serde(rename(serialize = "Zariman"))]
     Zariman,
 
-    #[serde(serialize_with = "serialize_nightwave")]
+    #[serde(
+        serialize_with = "serialize_nightwave",
+        deserialize_with = "deserialize_nightwave"
+    )]
     Nightwave(u8),
 }

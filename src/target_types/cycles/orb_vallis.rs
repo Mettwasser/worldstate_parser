@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::cycles::{Cycle, Phase, calculate_cycle};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Hash, Display)]
 pub enum OrbVallisState {
     Warm,

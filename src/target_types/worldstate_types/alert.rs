@@ -8,6 +8,7 @@ use crate::target_types::{
     worldstate_types::counted_item::CountedItem,
 };
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Alert {
@@ -24,6 +25,7 @@ pub struct Alert {
     pub icon: Option<String>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct AlertMissionInfo {
@@ -56,6 +58,7 @@ pub struct AlertMissionInfo {
     pub leaders_always_allowed: Option<bool>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct AlertMissionReward {

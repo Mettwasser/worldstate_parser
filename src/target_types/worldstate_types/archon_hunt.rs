@@ -6,6 +6,7 @@ use crate::{
     wfcd_data::bounty_rewards::DropItem,
 };
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct ArchonHunt {
@@ -24,6 +25,7 @@ pub struct ArchonHunt {
     pub missions: Vec<ArchonHuntMission>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct ArchonHuntMission {

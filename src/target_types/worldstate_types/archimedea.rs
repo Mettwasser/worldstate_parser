@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::{display_info::DisplayInfo, faction::Faction, mission_type::MissionType};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct ArchimedeaRoot {
@@ -12,6 +13,7 @@ pub struct ArchimedeaRoot {
     pub elite_temporal: Option<Archimedea>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Archimedea {
@@ -26,6 +28,7 @@ pub struct Archimedea {
     pub random_seed: u64,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct ArchimedeaMission {
@@ -36,6 +39,7 @@ pub struct ArchimedeaMission {
     pub difficulties: Vec<ArchimedeaDifficulties>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct ArchimedeaDifficulties {

@@ -1,6 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct VaultTrader {
@@ -22,6 +23,7 @@ pub struct VaultTrader {
     pub schedule_info: Vec<VaultTraderScheduleInfo>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub enum VaultTraderCurrency {
     Aya,
@@ -29,12 +31,14 @@ pub enum VaultTraderCurrency {
     RegalAya,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub struct VaultTraderPrice {
     pub currency: VaultTraderCurrency,
     pub amount: u64,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct VaultTraderManifest {
@@ -43,6 +47,7 @@ pub struct VaultTraderManifest {
     pub price: VaultTraderPrice,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct VaultTraderScheduleInfo {

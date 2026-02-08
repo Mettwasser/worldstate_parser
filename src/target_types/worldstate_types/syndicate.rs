@@ -3,6 +3,7 @@ use std::str::FromStr;
 use derive_more::Display;
 use serde::{Deserialize, Serialize};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Display, Serialize, Deserialize)]
 #[serde(into = "String", try_from = "String")]
 pub enum SyndicateType {

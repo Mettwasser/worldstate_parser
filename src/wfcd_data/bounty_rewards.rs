@@ -37,6 +37,7 @@ pub struct Bounty {
     pub rewards: HashMap<String, Vec<DropItem>>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct DropItem {

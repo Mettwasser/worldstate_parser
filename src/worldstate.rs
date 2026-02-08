@@ -147,6 +147,7 @@ pub enum WorldstateError {
     Provider(Box<dyn std::error::Error + Send + Sync>),
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct WorldState {

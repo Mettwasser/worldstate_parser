@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Relic {
@@ -14,6 +15,7 @@ pub struct Relic {
     pub relic_rewards: Vec<RelicReward>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct RelicReward {
@@ -26,6 +28,7 @@ pub struct RelicReward {
     pub item_count: i64,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone, PartialOrd, Ord, Hash)]
 pub enum RelicRewardRarity {
     Common,

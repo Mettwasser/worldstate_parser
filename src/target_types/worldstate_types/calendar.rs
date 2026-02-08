@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::display_info::DisplayInfo;
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Calendar {
@@ -19,6 +20,7 @@ pub struct Calendar {
     pub version: u32,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 pub struct CalendarDay {
     pub day: Option<DateTime<Utc>>,
@@ -27,6 +29,7 @@ pub struct CalendarDay {
     pub event: Option<CalendarEvent>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub enum CalendarEvent {
@@ -37,6 +40,7 @@ pub enum CalendarEvent {
     Upgrades([DisplayInfo; 3]),
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum CalendarSeason {
     Summer,

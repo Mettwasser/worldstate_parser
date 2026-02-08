@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::{faction::Faction, mission_type::MissionType};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub struct Node {
     pub system_index: usize,

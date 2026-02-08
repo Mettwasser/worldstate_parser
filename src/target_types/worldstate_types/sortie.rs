@@ -6,6 +6,7 @@ use crate::{
     wfcd_data::bounty_rewards::DropItem,
 };
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Sortie {
@@ -30,6 +31,7 @@ pub struct Sortie {
     pub twitter: bool,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct SortieVariant {

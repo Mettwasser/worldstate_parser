@@ -7,6 +7,7 @@ use crate::target_types::{
     worldstate_types::counted_item::CountedItem,
 };
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Invasion {

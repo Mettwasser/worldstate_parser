@@ -27,6 +27,7 @@ where
     }
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct SyndicateMission {
@@ -47,6 +48,7 @@ pub struct SyndicateMission {
     pub details: SyndicateMissionDetails,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase", tag = "type", content = "data")]
 pub enum SyndicateMissionDetails {
@@ -55,6 +57,7 @@ pub enum SyndicateMissionDetails {
     Empty,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct SyndicateJob {

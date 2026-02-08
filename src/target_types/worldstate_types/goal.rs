@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::node::Node;
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Goal {

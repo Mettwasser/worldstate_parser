@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::display_info::DisplayInfo;
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
 pub enum NightwaveChallengeType {
     Daily,
@@ -29,6 +30,7 @@ impl NightwaveChallengeType {
     }
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Nightwave {
@@ -47,6 +49,7 @@ pub struct Nightwave {
     pub active_challenges: Vec<NightwaveChallenge>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct NightwaveChallengeInfo {
@@ -55,6 +58,7 @@ pub struct NightwaveChallengeInfo {
     pub standing_awarded: u32,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct NightwaveChallenge {

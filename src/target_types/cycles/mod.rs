@@ -6,6 +6,7 @@ pub mod orb_vallis;
 use chrono::{DateTime, Duration, Timelike, Utc};
 use serde::{Deserialize, Serialize};
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Cycle<S> {
@@ -51,6 +52,7 @@ impl<S> Cycle<S> {
     }
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 struct Phase<S>(pub Duration, pub S);
 

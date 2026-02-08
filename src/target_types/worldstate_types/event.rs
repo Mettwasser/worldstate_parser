@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::target_types::language::Language;
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
@@ -32,6 +33,7 @@ pub struct Event {
     pub event_end_date: Option<DateTime<Utc>>,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct EventLink {
@@ -40,6 +42,7 @@ pub struct EventLink {
     pub link: String,
 }
 
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq, Clone, Hash)]
 #[serde(rename_all = "camelCase")]
 pub struct EventMessage {

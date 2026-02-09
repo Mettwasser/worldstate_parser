@@ -151,12 +151,16 @@ pub enum WorldstateError {
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct WorldState {
+    #[cfg_attr(feature = "utoipa", schema(inline))]
     pub cetus_cycle: CetusCycle,
 
+    #[cfg_attr(feature = "utoipa", schema(inline))]
     pub cambion_drift_cycle: CambionDriftCycle,
 
+    #[cfg_attr(feature = "utoipa", schema(inline))]
     pub orb_vallis_cycle: OrbVallisCycle,
 
+    #[cfg_attr(feature = "utoipa", schema(inline))]
     pub duviri_cycle: DuviriCycle,
 
     pub events: Vec<Event>,

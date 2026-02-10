@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash)]
-#[serde(untagged)]
+#[serde(tag = "type")]
 pub enum VoidTraderState {
     Arrived(ArrivedVoidTrader),
     Departed(DepartedVoidTrader),

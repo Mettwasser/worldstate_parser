@@ -141,12 +141,12 @@ impl DataFetcher {
         Ok(())
     }
 
-    /// Fetches assets from Mettwasser/worldstate_parser_assets using the 'main' branch.
+    /// Fetches assets from https://github.com/WFCD/worldstate_parser_rs_assets using the 'main' branch
     pub async fn fetch_assets(&self) -> Result<(), FetchError> {
-        info!("Fetching assets from Mettwasser/worldstate_parser_assets...");
+        info!("Fetching assets from WFCD/worldstate_parser_rs_assets...");
         self.fetch_github_folder(
-            "Mettwasser",
-            "worldstate_parser_assets",
+            "WFCD",
+            "worldstate_parser_rs_assets",
             "main",
             "",
             &self.assets_dir,

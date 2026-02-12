@@ -55,5 +55,5 @@ pub struct VaultTraderScheduleInfo {
 
     pub preview_hidden_until: Option<DateTime<Utc>>,
 
-    pub featured_item: String,
+    pub featured_item: Option<String>,
 }

@@ -109,7 +109,7 @@ pub struct ScheduleInfoUnmapped {
     #[serde(deserialize_with = "deserialize_mongo_date_opt", default)]
     preview_hidden_until: Option<DateTime<Utc>>,
 
-    featured_item: InternalPath<resolve_with::VaultTraderItem>,
+    featured_item: Option<InternalPath<resolve_with::VaultTraderItem>>,
 }
 
 impl Resolve<ContextRef<'_>> for ScheduleInfoUnmapped {

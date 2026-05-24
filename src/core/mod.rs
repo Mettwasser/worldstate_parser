@@ -111,8 +111,6 @@ pub mod resolve_with {
 }
 
 /// Deserializes an internal path like `/Lotus/Levels/Proc/Orokin/OrokinTowerMobileDefense`.
-///
-/// Yields additional info about the tag via the [`InternalPath::tag`] field.
 #[derive(
     derive_more::Debug, Clone, Deserialize, Serialize, PartialEq, Eq, Hash, derive_more::Display,
 )]

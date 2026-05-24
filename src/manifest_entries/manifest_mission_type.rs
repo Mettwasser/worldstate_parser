@@ -31,15 +31,14 @@ pub enum ManifestMissionType {
     /// Free Roam
     Landscape = 28,
     Circuit = 31,
-    Disruption = 32,
+    Disruption = 33,
     #[serde(rename(serialize = "Void Flood"))]
-    VoidFlood = 33,
+    VoidFlood = 34,
     #[serde(rename(serialize = "Void Cascade"))]
-    VoidCascade = 34,
+    VoidCascade = 35,
     #[serde(rename(serialize = "Void Armaggedon"))]
-    VoidArmaggedon = 35,
-    #[serde(rename(serialize = "Void Armaggedon 2"))]
-    VoidArmageddon2 = 36,
+    VoidArmaggedon = 36,
+
     Alchemy = 38,
     #[serde(rename(serialize = "Legacyte Harvest"))]
     LegacyteHarvest = 40,
@@ -89,7 +88,6 @@ impl Resolve<()> for ManifestMissionType {
             ManifestMissionType::VoidFlood => MissionType::VoidFlood,
             ManifestMissionType::VoidCascade => MissionType::VoidCascade,
             ManifestMissionType::VoidArmaggedon => MissionType::VoidArmaggedon,
-            ManifestMissionType::VoidArmageddon2 => MissionType::VoidArmageddon2,
             ManifestMissionType::Alchemy => MissionType::Alchemy,
             ManifestMissionType::LegacyteHarvest => MissionType::LegacyteHarvest,
             ManifestMissionType::ShrineDefense => MissionType::ShrineDefense,

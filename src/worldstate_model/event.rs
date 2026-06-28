@@ -15,12 +15,14 @@ pub struct EventUnmapped {
 
     messages: Vec<EventMessageUnmapped>,
 
-    prop: String,
+    prop: Option<String>,
 
     icon: Option<String>,
 
+    #[serde(default)]
     priority: bool,
 
+    #[serde(default)]
     mobile_only: bool,
 
     community: Option<bool>,

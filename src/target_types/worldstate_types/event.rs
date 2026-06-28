@@ -11,7 +11,7 @@ pub struct Event {
 
     pub messages: Vec<EventMessage>,
 
-    pub prop: String,
+    pub prop: Option<String>,
 
     pub icon: Option<String>,
 

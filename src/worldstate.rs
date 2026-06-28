@@ -80,8 +80,8 @@ pub(crate) struct WorldStateUnmapped {
 
     pub daily_deals: Vec<DailyDealUnmapped>,
 
-    #[serde(rename = "EndlessXpChoices")]
-    pub circuit: [CircuitUnmapped; 2],
+    #[serde(rename = "EndlessXpSchedule")]
+    pub circuit: [CircuitUnmapped; 1],
 
     #[serde(rename = "SeasonInfo")]
     pub nightwave: NightwaveUnmapped,
@@ -108,7 +108,10 @@ impl WorldStateUnmapped {
         let vault_trader = self.prime_vault_traders.resolve(ctx).into_iter().next();
         let void_storms = self.void_storms.resolve(ctx);
         let daily_deals = self.daily_deals.resolve(ctx);
-        let circuit = self.circuit.resolve(());
+
+        let [circuit_unresolved] = self.circuit;
+        let circuit = circuit_unresolved.resolve(());
+
         let nightwave = self.nightwave.resolve(ctx);
         let calendar = self.calendars.resolve(ctx).into_iter().next();
         let archimedea = self.archimedea.resolve(ctx);

@@ -151,7 +151,7 @@ async fn get_from_cache_or_fetch<T: DeserializeOwned>(
                 .expect("Manifest should be valid")
                 .0,
         ) {
-            fs::remove_file(file_name).await?;
+            fs::remove_file(file.path()).await?;
         }
     }
 

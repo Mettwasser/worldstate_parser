@@ -6,6 +6,19 @@ pub mod orb_vallis;
 use chrono::{DateTime, Duration, Timelike, Utc};
 use serde::{Deserialize, Serialize};
 
+pub trait WorldCycle: Sized {
+    type State: Copy;
+
+    const ANCHOR: DateTime<Utc>;
+    const ANCHOR_STATE: Self::State;
+
+    fn now() -> Self {
+        Self::at(Utc::now().with_nanosecond(0).unwrap())
+    }
+
+    fn at(time: DateTime<Utc>) -> Self;
+}
+
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 #[derive(Debug, Clone, Copy, Deserialize, Serialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "camelCase")]
@@ -49,6 +62,19 @@ impl<S> Cycle<S> {
         }
 
         parts.join(" ")
+    }
+}
+
+impl<S> Cycle<S>
+where
+    Self: WorldCycle<State = S>,
+{
+    pub fn now() -> Self {
+        <Self as WorldCycle>::now()
+    }
+
+    pub fn at(time: DateTime<Utc>) -> Self {
+        <Self as WorldCycle>::at(time)
     }
 }
 

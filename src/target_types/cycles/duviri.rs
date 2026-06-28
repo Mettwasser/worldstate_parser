@@ -1,8 +1,8 @@
-use chrono::{DateTime, Duration, NaiveDate, Timelike, Utc};
+use chrono::{DateTime, Duration, NaiveDate, Utc};
 use derive_more::Display;
 use serde::{Deserialize, Serialize};
 
-use crate::target_types::cycles::Cycle;
+use crate::target_types::cycles::{Cycle, WorldCycle};
 
 /// AKA "Mood"
 #[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
@@ -42,21 +42,23 @@ pub type DuviriCycle = Cycle<DuviriState>;
 
 impl DuviriCycle {
     pub const MOOD_DURATION: Duration = Duration::hours(2);
-    const TOTAL_CYCLE: Duration = Duration::hours(Self::MOOD_DURATION.num_hours() * 5);
+    const TOTAL_DURATION: Duration = Duration::hours(10);
+}
 
-    const KNOWN_JOY_START: DateTime<Utc> = NaiveDate::from_ymd_opt(2026, 2, 4)
+impl WorldCycle for DuviriCycle {
+    type State = DuviriState;
+
+    const ANCHOR: DateTime<Utc> = NaiveDate::from_ymd_opt(2026, 6, 28)
         .unwrap()
-        .and_hms_opt(22, 0, 0)
+        .and_hms_opt(16, 0, 0)
         .unwrap()
         .and_utc();
 
-    pub fn now() -> Self {
-        Self::at(Utc::now().with_nanosecond(0).unwrap())
-    }
+    const ANCHOR_STATE: Self::State = DuviriState::Joy;
 
-    pub fn at(time: DateTime<Utc>) -> Self {
-        let elapsed_secs = time.timestamp() - Self::KNOWN_JOY_START.timestamp();
-        let cycle_offset = elapsed_secs.rem_euclid(Self::TOTAL_CYCLE.num_seconds());
+    fn at(time: DateTime<Utc>) -> Self {
+        let elapsed_secs = time.timestamp() - Self::ANCHOR.timestamp();
+        let cycle_offset = elapsed_secs.rem_euclid(Self::TOTAL_DURATION.num_seconds());
 
         let mood_idx = (cycle_offset / Self::MOOD_DURATION.num_seconds()) as usize;
         let state = DuviriState::from_index(mood_idx);
@@ -73,13 +75,3 @@ impl DuviriCycle {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::DuviriCycle;
-
-    #[test]
-    fn test() {
-        dbg!(DuviriCycle::now().time_left());
-        dbg!(DuviriCycle::now());
-    }
-}
